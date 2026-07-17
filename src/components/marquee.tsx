@@ -1,3 +1,5 @@
+"use client";
+
 import { brands } from "@/lib/site";
 import { motion } from "motion/react";
 
