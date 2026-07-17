@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ------------------------------------------------------------------ *
+ * Design tokens  →  Tailwind utilities
+ * (bg-background, text-foreground, text-muted, border-line,
+ *  text-primary, bg-surface, font-display, font-mono, ...)
+ * ------------------------------------------------------------------ */
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-glow: var(--primary-glow);
+  --color-line: var(--line);
+  --color-live: var(--live);
+
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ---------------------------- LIGHT (default) --------------------- */
+:root {
+  --background: #eef2f7; /* cool "monitor haze" */
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --foreground: #0a1524; /* deep control-room navy */
+  --muted: #55657a;
+  --primary: #0891a0; /* lens cyan */
+  --primary-strong: #0b616e; /* accessible for text/links on white */
+  --primary-glow: #17c9da; /* glows/beams only */
+  --on-primary: #001318; /* text on bg-primary (AA on light cyan) */
+  --rating: #b07400; /* star gold, legible on light surfaces */
+  --line: #dbe3ee;
+  --live: #ff3b47;
+}
+
+/* ---------------------------- DARK -------------------------------- *
+ * Driven by data-theme="dark" on <html> (set by an inline pre-paint
+ * script + the nav toggle). We use a data attribute, not a class,
+ * because React controls <html>'s className and would drop it on
+ * hydration. .dark is kept as an alias for convenience.               */
+.dark,
+[data-theme="dark"] {
+  --background: #0a0e14; /* control-room black */
+  --surface: #101826;
+  --surface-2: #0e1622;
+  --foreground: #eaf1f8;
+  --muted: #8695a8;
+  --primary: #22d3ee; /* bright lens cyan reads well on dark */
+  --primary-strong: #7de8f5;
+  --primary-glow: #22d3ee;
+  --on-primary: #04222b; /* text on bright cyan */
+  --rating: #ffc24d;
+  --line: #1c2a3a;
+  --live: #ff5a63;
+}
+
+/* ------------------------------ base ----------------------------- */
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 28%, transparent);
+  color: var(--foreground);
+}
+
+/* Consistent, visible keyboard focus (a11y floor) */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------------------------- helpers ---------------------------- */
+
+/* Monitoring / blueprint grid, drawn from the surveillance world */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Radial vignette so the grid fades toward the edges */
+.mask-fade {
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 55%, transparent 100%);
+}
+
+/* Cyan "live feed" grid for the dark hero monitor (theme-independent) */
+.bg-grid-feed {
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+/* Mono HUD label */
+.hud {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+}
+
+/* Soft cyan glow for the signature moments */
+.glow-primary {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent),
+    0 8px 40px -8px color-mix(in srgb, var(--primary-glow) 55%, transparent);
+}
+
+/* ---------------------------- keyframes -------------------------- */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.animate-live { animation: live-pulse 1.4s ease-in-out infinite; }
+
+@keyframes scan-y {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 0.85; }
+  90% { opacity: 0.85; }
+  100% { transform: translateY(2400%); opacity: 0; }
+}
+.animate-scan { animation: scan-y 5.5s linear infinite; }
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-floaty { animation: floaty 6s ease-in-out infinite; }
+
+@keyframes gridpan {
+  from { background-position: 0 0; }
+  to { background-position: 0 46px; }
+}
+.animate-gridpan { animation: gridpan 6s linear infinite; }
+
+/* Infinite trust marquee — two tracks translate -100% for a seamless loop */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+.marquee-track {
+  animation: marquee-scroll 32s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ------------------------ reduced motion ------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-live,
+  .animate-scan,
+  .animate-floaty,
+  .animate-gridpan,
+  .marquee-track {
+    animation: none !important;
+  }
 }
