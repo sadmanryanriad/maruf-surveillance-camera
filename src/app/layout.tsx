@@ -48,8 +48,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // Theme is resolved on the server from a cookie so the correct palette is in
-  // the very first HTML — no flash, no client-timing games. Defaults to light.
-  const theme = (await cookies()).get("theme")?.value === "dark" ? "dark" : "light";
+  // the very first HTML — no flash, no client-timing games. Defaults to dark.
+  const theme = (await cookies()).get("theme")?.value === "light" ? "light" : "dark";
 
   return (
     <html
