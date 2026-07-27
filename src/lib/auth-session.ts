@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { cache } from "react";
 import bcrypt from "bcryptjs";
 import { connectToDatabase } from "@/lib/db";
 import User, { IUser } from "@/models/User";
@@ -50,7 +51,10 @@ export async function setAdminSessionCookie(session: AdminSession): Promise<void
   });
 }
 
-export async function getCurrentAdminSession(): Promise<AdminSession | null> {
+/**
+ * Per-request deduplicated session resolver (Rule 3.9: server-cache-react)
+ */
+export const getCurrentAdminSession = cache(async (): Promise<AdminSession | null> => {
   try {
     const cookieStore = await cookies();
     const cookie = cookieStore.get(COOKIE_NAME);
@@ -68,7 +72,7 @@ export async function getCurrentAdminSession(): Promise<AdminSession | null> {
   } catch {
     return null;
   }
-}
+});
 
 export async function clearAdminSessionCookie(): Promise<void> {
   const cookieStore = await cookies();
