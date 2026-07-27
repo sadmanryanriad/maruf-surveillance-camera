@@ -36,13 +36,13 @@ export const metadata: Metadata = {
   ],
 };
 
+import { LayoutShell } from "@/components/layout-shell";
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Theme is resolved on the server from a cookie so the correct palette is in
-  // the very first HTML — no flash, no client-timing games. Defaults to dark.
   const theme = (await cookies()).get("theme")?.value === "light" ? "light" : "dark";
 
   return (
@@ -52,9 +52,7 @@ export default async function RootLayout({
       className={`${manrope.variable} ${plexMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );

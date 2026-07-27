@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("maruf@gmail.com");
-  const [password, setPassword] = useState("Changeme123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -70,7 +70,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="maruf@gmail.com"
+                placeholder="admin@marufsecurity.com"
                 required
                 autoFocus
                 className="w-full rounded-xl border border-line bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
@@ -106,12 +106,6 @@ export default function LoginPage() {
               {errorMsg}
             </div>
           )}
-
-          <div className="mt-6 border-t border-line pt-4 text-center">
-            <p className="text-[11px] text-muted">
-              Default Admin: <strong className="text-foreground">maruf@gmail.com</strong> | Password: <strong className="text-foreground">Changeme123</strong>
-            </p>
-          </div>
         </div>
       </div>
     </main>

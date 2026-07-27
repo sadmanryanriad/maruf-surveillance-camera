@@ -1,12 +1,42 @@
 import Link from "next/link";
 import { getCurrentAdminSession } from "@/lib/auth-session";
-import { getAllLeads } from "@/lib/leads-store";
+import { connectToDatabase } from "@/lib/db";
+import Lead from "@/models/Lead";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardOverviewPage() {
   const session = await getCurrentAdminSession();
-  const leads = getAllLeads();
+
+  let leads: Array<{
+    _id: string;
+    type: string;
+    name: string;
+    phone: string;
+    propertyType?: string;
+    service?: string;
+    notes?: string;
+    status: string;
+    createdAt: Date | string;
+  }> = [];
+
+  try {
+    await connectToDatabase();
+    const rawLeads = await Lead.find().sort({ createdAt: -1 }).lean();
+    leads = rawLeads.map((l) => ({
+      _id: l._id.toString(),
+      type: l.type,
+      name: l.name,
+      phone: l.phone,
+      propertyType: l.propertyType,
+      service: l.service,
+      notes: l.notes,
+      status: l.status,
+      createdAt: l.createdAt,
+    }));
+  } catch (err) {
+    console.error("Failed to load leads from MongoDB on dashboard overview:", err);
+  }
 
   const totalLeads = leads.length;
   const newLeads = leads.filter((l) => l.status === "new").length;
@@ -93,7 +123,7 @@ export default async function DashboardOverviewPage() {
               Recent Submissions
             </h2>
             <p className="text-xs text-muted mt-0.5">
-              Latest inquiries received from website visitors
+              Latest inquiries received from website visitors (MongoDB Live)
             </p>
           </div>
 
@@ -105,52 +135,58 @@ export default async function DashboardOverviewPage() {
           </Link>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-surface-2 uppercase font-bold text-muted border-b border-line">
-              <tr>
-                <th className="px-6 py-3.5">Type</th>
-                <th className="px-6 py-3.5">Client Name</th>
-                <th className="px-6 py-3.5">Phone</th>
-                <th className="px-6 py-3.5">Details</th>
-                <th className="px-6 py-3.5">Status</th>
-                <th className="px-6 py-3.5">Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line">
-              {recentLeads.map((lead) => (
-                <tr key={lead.id} className="hover:bg-surface-2/60 transition-colors">
-                  <td className="px-6 py-4">
-                    <span className="rounded-full bg-surface-2 border border-line px-2.5 py-1 font-extrabold uppercase text-[10px]">
-                      {lead.type}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 font-bold text-foreground">{lead.name}</td>
-                  <td className="px-6 py-4 text-muted">{lead.phone}</td>
-                  <td className="px-6 py-4 text-muted max-w-xs truncate">
-                    {lead.propertyType || lead.service || lead.notes || "—"}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase ${
-                        lead.status === "new"
-                          ? "bg-[#c8102e]/10 text-[#c8102e]"
-                          : lead.status === "completed"
-                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                          : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                      }`}
-                    >
-                      {lead.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-muted">
-                    {new Date(lead.createdAt).toLocaleDateString("en-GB")}
-                  </td>
+        {recentLeads.length === 0 ? (
+          <div className="p-8 text-center text-xs text-muted">
+            No submissions recorded in database yet.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-surface-2 uppercase font-bold text-muted border-b border-line">
+                <tr>
+                  <th className="px-6 py-3.5">Type</th>
+                  <th className="px-6 py-3.5">Client Name</th>
+                  <th className="px-6 py-3.5">Phone</th>
+                  <th className="px-6 py-3.5">Details</th>
+                  <th className="px-6 py-3.5">Status</th>
+                  <th className="px-6 py-3.5">Date (Local)</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {recentLeads.map((lead) => (
+                  <tr key={lead._id} className="hover:bg-surface-2/60 transition-colors">
+                    <td className="px-6 py-4">
+                      <span className="rounded-full bg-surface-2 border border-line px-2.5 py-1 font-extrabold uppercase text-[10px]">
+                        {lead.type}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 font-bold text-foreground">{lead.name}</td>
+                    <td className="px-6 py-4 text-muted">{lead.phone}</td>
+                    <td className="px-6 py-4 text-muted max-w-xs truncate">
+                      {lead.propertyType || lead.service || lead.notes || "—"}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase ${
+                          lead.status === "new"
+                            ? "bg-[#c8102e]/10 text-[#c8102e]"
+                            : lead.status === "completed"
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                            : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                        }`}
+                      >
+                        {lead.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-muted font-mono text-[11px]">
+                      {new Date(lead.createdAt).toLocaleString("en-GB")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

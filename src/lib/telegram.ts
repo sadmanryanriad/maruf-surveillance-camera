@@ -15,7 +15,7 @@ export async function sendTelegramMessage(
     return { ok: false, description: "TELEGRAM_BOT_TOKEN environment variable is missing." };
   }
 
-  if (!chatId) {
+  if (!chatId || !chatId.trim()) {
     return { ok: false, description: "No chatId provided" };
   }
 
@@ -25,7 +25,7 @@ export async function sendTelegramMessage(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        chat_id: chatId,
+        chat_id: chatId.trim(),
         text,
         parse_mode: parseMode,
       }),
@@ -51,8 +51,7 @@ export async function getTelegramChatIds(): Promise<string[]> {
     console.warn("Could not fetch Telegram chat IDs from MongoDB:", err);
   }
 
-  const defaultId = process.env.DEFAULT_TELEGRAM_CHAT_ID;
-  return defaultId ? [defaultId] : [];
+  return [];
 }
 
 export async function sendLeadTelegramNotification(
@@ -72,14 +71,21 @@ export async function sendLeadTelegramNotification(
 ): Promise<TelegramMessageResponse[]> {
   const chatIds = await getTelegramChatIds();
   if (chatIds.length === 0) {
+    console.warn("No Telegram Chat IDs configured in database. Notification skipped.");
     return [{ ok: false, description: "No Telegram Chat IDs configured." }];
   }
 
-  const emoji =
+  const typeEmoji =
     lead.type === "quote" ? "📋 QUOTE REQUEST" : lead.type === "book" ? "📅 SURVEY BOOKING" : "💬 CONTACT INQUIRY";
 
+  // Format UTC date string for Telegram message
+  const utcDate = new Date(lead.createdAt);
+  const utcFormatted = !isNaN(utcDate.getTime())
+    ? `${utcDate.toUTCString().replace("GMT", "UTC")}`
+    : `${lead.createdAt} UTC`;
+
   const messageLines = [
-    `<b>🚨 NEW LEAD SUBMISSION: ${emoji}</b>`,
+    `<b>🟢 NEW LEAD SUBMISSION: ${typeEmoji}</b>`,
     `➖➖➖➖➖➖➖➖➖➖`,
     `<b>Name:</b> ${escapeHtml(lead.name)}`,
     `<b>Phone:</b> ${escapeHtml(lead.phone)}`,
@@ -90,7 +96,7 @@ export async function sendLeadTelegramNotification(
     lead.service ? `<b>Service Requested:</b> ${escapeHtml(lead.service)}` : null,
     lead.notes ? `<b>Message/Notes:</b>\n<i>${escapeHtml(lead.notes)}</i>` : null,
     `➖➖➖➖➖➖➖➖➖➖`,
-    `<b>Received:</b> ${new Date(lead.createdAt).toLocaleString("en-GB")}`,
+    `<b>Received (UTC):</b> <code>${escapeHtml(utcFormatted)}</code>`,
     `<b>Lead ID:</b> <code>${lead.id}</code>`,
   ].filter(Boolean);
 

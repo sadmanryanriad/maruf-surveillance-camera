@@ -5,8 +5,8 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const sessionCookie = req.cookies.get("maruf_admin_session");
 
-  // Protect /dashboard routes
-  if (pathname.startsWith("/dashboard")) {
+  // Protect /dashboard and /admin routes
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) {
     if (!sessionCookie || !sessionCookie.value) {
       const loginUrl = new URL("/login", req.url);
       return NextResponse.redirect(loginUrl);
@@ -25,5 +25,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/admin", "/login"],
 };

@@ -281,24 +281,30 @@ export default function UsersAndSettingsPage() {
             <label className="block text-xs font-bold uppercase tracking-wider text-muted">
               Active Telegram Chat Recipients ({chatIds.length}):
             </label>
-            <div className="space-y-2">
-              {chatIds.map((id) => (
-                <div
-                  key={id}
-                  className="flex items-center justify-between rounded-xl border border-line bg-surface-2 px-3.5 py-2 text-xs font-mono font-semibold text-foreground"
-                >
-                  <span>🆔 {id}</span>
-                  {currentRole === "admin" && (
-                    <button
-                      onClick={() => handleRemoveChatId(id)}
-                      className="text-[11px] font-bold text-[#c8102e] hover:underline"
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
+            {chatIds.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-line bg-surface-2 p-4 text-center text-xs font-semibold text-muted">
+                No Telegram Chat IDs configured yet. Add a Chat ID above to enable real-time lead alerts.
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {chatIds.map((id) => (
+                  <div
+                    key={id}
+                    className="flex items-center justify-between rounded-xl border border-line bg-surface-2 px-3.5 py-2 text-xs font-mono font-semibold text-foreground"
+                  >
+                    <span>🆔 {id}</span>
+                    {currentRole === "admin" && (
+                      <button
+                        onClick={() => handleRemoveChatId(id)}
+                        className="text-[11px] font-bold text-[#c8102e] hover:underline"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
