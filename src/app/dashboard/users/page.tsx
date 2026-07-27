@@ -17,6 +17,13 @@ export default function UsersAndSettingsPage() {
   const [newChatId, setNewChatId] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Site Contact Details state
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactAddress, setContactAddress] = useState("");
+  const [contactHours, setContactHours] = useState("");
+  const [contactMsg, setContactMsg] = useState<{ text: string; isError: boolean } | null>(null);
+
   // Password change state
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -31,9 +38,10 @@ export default function UsersAndSettingsPage() {
 
   async function loadData() {
     try {
-      const [uRes, tRes] = await Promise.all([
+      const [uRes, tRes, sRes] = await Promise.all([
         fetch("/api/users"),
         fetch("/api/settings/telegram"),
+        fetch("/api/settings"),
       ]);
 
       if (uRes.ok) {
@@ -46,6 +54,16 @@ export default function UsersAndSettingsPage() {
         const tData = await tRes.json();
         setChatIds(tData.telegramChatIds || []);
       }
+
+      if (sRes.ok) {
+        const sData = await sRes.json();
+        if (sData.setting) {
+          setContactPhone(sData.setting.phone || "");
+          setContactEmail(sData.setting.email || "");
+          setContactAddress(sData.setting.address || "");
+          setContactHours(sData.setting.hours || "");
+        }
+      }
     } catch {
       console.error("Failed to load users & settings.");
     } finally {
@@ -56,6 +74,34 @@ export default function UsersAndSettingsPage() {
   useEffect(() => {
     loadData();
   }, []);
+
+  async function handleUpdateContactInfo(e: React.FormEvent) {
+    e.preventDefault();
+    setContactMsg(null);
+
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: contactPhone,
+          email: contactEmail,
+          address: contactAddress,
+          hours: contactHours,
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setContactMsg({ text: data.error || "Failed to update contact info.", isError: true });
+        return;
+      }
+
+      setContactMsg({ text: "Site contact information updated & logged!", isError: false });
+    } catch {
+      setContactMsg({ text: "Error updating contact info.", isError: true });
+    }
+  }
 
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault();
@@ -179,11 +225,102 @@ export default function UsersAndSettingsPage() {
           Users & Security Settings
         </h1>
         <p className="mt-1 text-sm text-muted">
-          Manage system administrators, password security, and Telegram notification routing.
+          Manage site contact details, system administrators, password security, and Telegram notifications.
         </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
+        {/* Manage Site Contact Information */}
+        <div className="rounded-2xl border border-line bg-surface p-6 shadow-sm space-y-5">
+          <div>
+            <h2 className="font-display text-lg font-bold text-foreground">
+              Site Contact Information
+            </h2>
+            <p className="text-xs text-muted mt-0.5">
+              Update phone, email, address, and hours shown on website.
+            </p>
+          </div>
+
+          <form onSubmit={handleUpdateContactInfo} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
+                Contact Phone
+              </label>
+              <input
+                type="text"
+                value={contactPhone}
+                disabled={currentRole !== "admin"}
+                onChange={(e) => setContactPhone(e.target.value)}
+                required
+                className="w-full rounded-xl border border-line bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
+                Contact Email
+              </label>
+              <input
+                type="email"
+                value={contactEmail}
+                disabled={currentRole !== "admin"}
+                onChange={(e) => setContactEmail(e.target.value)}
+                required
+                className="w-full rounded-xl border border-line bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
+                Office / Visit Address
+              </label>
+              <input
+                type="text"
+                value={contactAddress}
+                disabled={currentRole !== "admin"}
+                onChange={(e) => setContactAddress(e.target.value)}
+                required
+                className="w-full rounded-xl border border-line bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
+                Working Hours
+              </label>
+              <input
+                type="text"
+                value={contactHours}
+                disabled={currentRole !== "admin"}
+                onChange={(e) => setContactHours(e.target.value)}
+                required
+                className="w-full rounded-xl border border-line bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            {currentRole === "admin" && (
+              <button
+                type="submit"
+                className="rounded-xl bg-foreground px-5 py-2.5 text-xs font-bold text-background hover:bg-primary hover:text-white transition-all shadow-sm"
+              >
+                Save Contact Info
+              </button>
+            )}
+
+            {contactMsg && (
+              <div
+                className={`rounded-xl border p-3 text-xs font-medium ${
+                  contactMsg.isError
+                    ? "border-[#c8102e]/30 bg-[#c8102e]/10 text-[#c8102e]"
+                    : "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                }`}
+              >
+                {contactMsg.text}
+              </div>
+            )}
+          </form>
+        </div>
+
         {/* Change Self Password Card */}
         <div className="rounded-2xl border border-line bg-surface p-6 shadow-sm space-y-5">
           <div>
@@ -243,69 +380,69 @@ export default function UsersAndSettingsPage() {
             )}
           </form>
         </div>
+      </div>
 
-        {/* Telegram Notification Chat IDs Settings */}
-        <div className="rounded-2xl border border-line bg-surface p-6 shadow-sm space-y-5">
-          <div>
-            <h2 className="font-display text-lg font-bold text-foreground">
-              Telegram Notification Routing
-            </h2>
-            <p className="text-xs text-muted mt-0.5">
-              Target Telegram Chat IDs to receive real-time lead alerts from website forms.
-            </p>
-          </div>
+      {/* Telegram Notification Chat IDs Settings */}
+      <div className="rounded-2xl border border-line bg-surface p-6 shadow-sm space-y-5">
+        <div>
+          <h2 className="font-display text-lg font-bold text-foreground">
+            Telegram Notification Routing
+          </h2>
+          <p className="text-xs text-muted mt-0.5">
+            Target Telegram Chat IDs to receive real-time lead alerts from website forms.
+          </p>
+        </div>
 
-          {currentRole === "admin" ? (
-            <form onSubmit={handleAddChatId} className="flex gap-2">
-              <input
-                type="text"
-                value={newChatId}
-                onChange={(e) => setNewChatId(e.target.value)}
-                placeholder="Enter Chat ID (e.g. 1240674937)"
-                className="flex-1 rounded-xl border border-line bg-background px-3.5 py-2.5 text-xs text-foreground focus:border-primary focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-white hover:bg-primary/90"
-              >
-                Add ID
-              </button>
-            </form>
+        {currentRole === "admin" ? (
+          <form onSubmit={handleAddChatId} className="flex gap-2 max-w-md">
+            <input
+              type="text"
+              value={newChatId}
+              onChange={(e) => setNewChatId(e.target.value)}
+              placeholder="Enter Chat ID (e.g. 1240674937)"
+              className="flex-1 rounded-xl border border-line bg-background px-3.5 py-2.5 text-xs text-foreground focus:border-primary focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-white hover:bg-primary/90"
+            >
+              Add ID
+            </button>
+          </form>
+        ) : (
+          <p className="text-xs text-muted">
+            Only Admin accounts can add or remove Telegram Chat IDs.
+          </p>
+        )}
+
+        <div className="space-y-2">
+          <label className="block text-xs font-bold uppercase tracking-wider text-muted">
+            Active Telegram Chat Recipients ({chatIds.length}):
+          </label>
+          {chatIds.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-line bg-surface-2 p-4 text-center text-xs font-semibold text-muted">
+              No Telegram Chat IDs configured yet. Add a Chat ID above to enable real-time lead alerts.
+            </div>
           ) : (
-            <p className="text-xs text-muted">
-              Only Admin accounts can add or remove Telegram Chat IDs.
-            </p>
+            <div className="space-y-2 max-w-md">
+              {chatIds.map((id) => (
+                <div
+                  key={id}
+                  className="flex items-center justify-between rounded-xl border border-line bg-surface-2 px-3.5 py-2 text-xs font-mono font-semibold text-foreground"
+                >
+                  <span>🆔 {id}</span>
+                  {currentRole === "admin" && (
+                    <button
+                      onClick={() => handleRemoveChatId(id)}
+                      className="text-[11px] font-bold text-[#c8102e] hover:underline"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
           )}
-
-          <div className="space-y-2">
-            <label className="block text-xs font-bold uppercase tracking-wider text-muted">
-              Active Telegram Chat Recipients ({chatIds.length}):
-            </label>
-            {chatIds.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-line bg-surface-2 p-4 text-center text-xs font-semibold text-muted">
-                No Telegram Chat IDs configured yet. Add a Chat ID above to enable real-time lead alerts.
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {chatIds.map((id) => (
-                  <div
-                    key={id}
-                    className="flex items-center justify-between rounded-xl border border-line bg-surface-2 px-3.5 py-2 text-xs font-mono font-semibold text-foreground"
-                  >
-                    <span>🆔 {id}</span>
-                    {currentRole === "admin" && (
-                      <button
-                        onClick={() => handleRemoveChatId(id)}
-                        className="text-[11px] font-bold text-[#c8102e] hover:underline"
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </div>
 

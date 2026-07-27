@@ -67,9 +67,20 @@ async function seedDefaultAdmin() {
     const setting = await Setting.findOne();
     if (!setting) {
       await Setting.create({
+        phone: "+880 1760-345435",
+        email: "hello@maruf-security.com",
+        address: "24 Watchtower Ave, Suite 300, Metro City",
+        hours: "Mon-Sat · 8am-8pm",
         telegramChatIds: ["1240674937"],
       });
-      console.log("✅ Seeded default Telegram Chat ID: 1240674937");
+      console.log("✅ Seeded default site settings and Telegram Chat ID");
+    } else {
+      let updated = false;
+      if (!setting.phone) { setting.phone = "+880 1760-345435"; updated = true; }
+      if (!setting.email) { setting.email = "hello@maruf-security.com"; updated = true; }
+      if (!setting.address) { setting.address = "24 Watchtower Ave, Suite 300, Metro City"; updated = true; }
+      if (!setting.hours) { setting.hours = "Mon-Sat · 8am-8pm"; updated = true; }
+      if (updated) await setting.save();
     }
   } catch (err) {
     console.error("Error seeding default admin / settings:", err);

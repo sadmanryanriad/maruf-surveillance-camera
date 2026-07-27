@@ -1,16 +1,36 @@
 import { site } from "@/lib/site";
+import { connectToDatabase } from "@/lib/db";
+import Setting from "@/models/Setting";
 import { ContactForm } from "./contact-form";
 import { Reveal } from "./reveal";
 import { AmbientOrbs } from "./ambient-orbs";
 
-const contactRows = [
-  { label: "Call", value: site.phone, href: `tel:${site.phone.replace(/[^+\d]/g, "")}` },
-  { label: "Email", value: site.email, href: `mailto:${site.email}` },
-  { label: "Visit", value: site.address },
-  { label: "Hours", value: site.hours },
-];
+export async function ContactSection() {
+  let phone = site.phone;
+  let email = site.email;
+  let address = site.address;
+  let hours = site.hours;
 
-export function ContactSection() {
+  try {
+    await connectToDatabase();
+    const setting = await Setting.findOne().lean();
+    if (setting) {
+      if (setting.phone) phone = setting.phone;
+      if (setting.email) email = setting.email;
+      if (setting.address) address = setting.address;
+      if (setting.hours) hours = setting.hours;
+    }
+  } catch (err) {
+    console.error("Failed to load contact info from MongoDB in ContactSection:", err);
+  }
+
+  const contactRows = [
+    { label: "CALL", value: phone, href: `tel:${phone.replace(/[^+\d]/g, "")}` },
+    { label: "EMAIL", value: email, href: `mailto:${email}` },
+    { label: "VISIT", value: address },
+    { label: "HOURS", value: hours },
+  ];
+
   return (
     <section id="contact" className="relative scroll-mt-20 overflow-hidden py-20 sm:py-28">
       <AmbientOrbs
