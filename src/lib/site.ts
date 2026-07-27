@@ -1,10 +1,11 @@
 export const site = {
   name: "Maruf",
   tagline: "Surveillance, done properly.",
-  phone: "+1 (555) 018-4477",
+  phone: "+880 1790-424860",
   email: "hello@maruf-security.com",
   address: "24 Watchtower Ave, Suite 300, Metro City",
   hours: "Mon–Sat · 8am–8pm",
+  whatsappNumber: "8801790424860",
 };
 
 export type NavItem = { label: string; href: string };

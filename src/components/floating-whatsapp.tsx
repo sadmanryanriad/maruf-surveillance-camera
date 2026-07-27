@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { site } from "@/lib/site";
 
 export function FloatingWhatsAppButton() {
-  const [waNumber, setWaNumber] = useState("8801790424860");
+  const [waNumber, setWaNumber] = useState(site.whatsappNumber || "8801790424860");
 
   useEffect(() => {
     fetch("/api/settings")
@@ -13,7 +14,10 @@ export function FloatingWhatsAppButton() {
           setWaNumber(data.setting.whatsappNumber);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        // Fallback resilience if DB/network fails
+        setWaNumber(site.whatsappNumber || "8801790424860");
+      });
   }, []);
 
   const cleanNum = waNumber.replace(/[^0-9]/g, "") || "8801790424860";

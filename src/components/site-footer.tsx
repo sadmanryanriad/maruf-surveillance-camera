@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { site, socials } from "@/lib/site";
 import { Logo } from "./logo";
@@ -23,6 +26,27 @@ const columns: { title: string; links: { label: string; href: string }[] }[] = [
 ];
 
 export function SiteFooter() {
+  const [phone, setPhone] = useState(site.phone);
+  const [email, setEmail] = useState(site.email);
+  const [address, setAddress] = useState(site.address);
+  const [hours, setHours] = useState(site.hours);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.setting) {
+          if (data.setting.phone) setPhone(data.setting.phone);
+          if (data.setting.email) setEmail(data.setting.email);
+          if (data.setting.address) setAddress(data.setting.address);
+          if (data.setting.hours) setHours(data.setting.hours);
+        }
+      })
+      .catch(() => {
+        // Fallback resilience if DB is offline
+      });
+  }, []);
+
   return (
     <footer className="border-t border-line bg-surface/40">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
@@ -71,17 +95,17 @@ export function SiteFooter() {
           <h3 className="hud mb-4 text-muted">Reach us</h3>
           <ul className="space-y-2.5 text-sm text-foreground/80">
             <li>
-              <a href={`tel:${site.phone.replace(/[^+\d]/g, "")}`} className="transition-colors hover:text-primary-strong">
-                {site.phone}
+              <a href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="transition-colors hover:text-primary-strong font-medium">
+                {phone}
               </a>
             </li>
             <li>
-              <a href={`mailto:${site.email}`} className="transition-colors hover:text-primary-strong">
-                {site.email}
+              <a href={`mailto:${email}`} className="transition-colors hover:text-primary-strong font-medium">
+                {email}
               </a>
             </li>
-            <li className="text-muted">{site.address}</li>
-            <li className="text-muted">{site.hours}</li>
+            <li className="text-muted">{address}</li>
+            <li className="text-muted">{hours}</li>
           </ul>
         </div>
       </div>
