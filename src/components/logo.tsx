@@ -2,13 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/site";
 
-export function ApertureMark({ className = "h-8 w-auto" }: { className?: string }) {
+export function ApertureMark({ className = "h-[38px] sm:h-8 w-auto" }: { className?: string }) {
   return (
     <Logo className={className} />
   );
 }
 
-export function Logo({ className = "h-8 w-auto" }: { className?: string }) {
+export function Logo({ className = "h-[38px] sm:h-8 w-auto" }: { className?: string }) {
   return (
     <Link
       href="/"
@@ -19,8 +19,8 @@ export function Logo({ className = "h-8 w-auto" }: { className?: string }) {
       <Image
         src="/logo-light.svg"
         alt="Maruf Silhouette Security Solutions"
-        width={240}
-        height={67}
+        width={260}
+        height={73}
         priority
         className={`logo-light object-contain ${className}`}
       />
@@ -28,8 +28,8 @@ export function Logo({ className = "h-8 w-auto" }: { className?: string }) {
       <Image
         src="/logo-dark.svg"
         alt="Maruf Silhouette Security Solutions"
-        width={240}
-        height={67}
+        width={260}
+        height={73}
         priority
         className={`logo-dark object-contain ${className}`}
       />
