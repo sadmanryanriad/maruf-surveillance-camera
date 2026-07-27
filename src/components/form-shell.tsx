@@ -9,11 +9,13 @@ export function FormShell({
   submitLabel,
   successTitle,
   successBody,
+  formType = "quote",
 }: {
   children: ReactNode;
   submitLabel: string;
   successTitle: string;
   successBody: string;
+  formType?: "quote" | "book" | "contact";
 }) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -21,10 +23,38 @@ export function FormShell({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
-    // Demo only — no data leaves the browser.
-    await new Promise((r) => setTimeout(r, 900));
-    setSending(false);
-    setSent(true);
+    try {
+      const formData = new FormData(e.currentTarget);
+      const name = (formData.get("name") as string) || "Inquirer";
+      const email = (formData.get("email") as string) || "";
+      const phone = (formData.get("phone") as string) || "N/A";
+      const propertyType = (formData.get("propertyType") as string) || "";
+      const cameraCount = (formData.get("cameras") as string) || "";
+      const service = (formData.get("service") as string) || "";
+      const preferredDate = (formData.get("date") as string) || "";
+      const notes = (formData.get("notes") as string) || (formData.get("address") as string) || "";
+
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: formType,
+          name,
+          email,
+          phone,
+          propertyType,
+          cameraCount,
+          preferredDate,
+          service,
+          notes,
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to submit lead to API:", err);
+    } finally {
+      setSending(false);
+      setSent(true);
+    }
   }
 
   return (

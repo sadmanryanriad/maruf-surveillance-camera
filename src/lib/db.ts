@@ -1,0 +1,77 @@
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://maruf:0WcLHEwtKRLfeCcx@cluster0.ni8nft9.mongodb.net/?appName=Cluster0";
+
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+}
+
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+declare global {
+  // eslint-disable-next-line no-var
+  var mongooseCache: MongooseCache | undefined;
+}
+
+const cached: MongooseCache = global.mongooseCache || { conn: null, promise: null };
+if (!global.mongooseCache) {
+  global.mongooseCache = cached;
+}
+
+export async function connectToDatabase(): Promise<typeof mongoose> {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+    };
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => m);
+  }
+
+  try {
+    cached.conn = await cached.promise;
+    await seedDefaultAdmin();
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
+}
+
+async function seedDefaultAdmin() {
+  try {
+    const User = (await import("@/models/User")).default;
+    const adminCount = await User.countDocuments();
+    if (adminCount === 0) {
+      const hashedPassword = await bcrypt.hash("Changeme123", 10);
+      await User.create({
+        email: "maruf@gmail.com",
+        password: hashedPassword,
+        name: "Maruf Admin",
+        role: "admin",
+        telegramChatId: "1240674937",
+      });
+      console.log("✅ Seeded default admin user: maruf@gmail.com");
+    }
+
+    const Setting = (await import("@/models/Setting")).default;
+    const setting = await Setting.findOne();
+    if (!setting) {
+      await Setting.create({
+        telegramChatIds: ["1240674937"],
+      });
+      console.log("✅ Seeded default Telegram Chat ID: 1240674937");
+    }
+  } catch (err) {
+    console.error("Error seeding default admin / settings:", err);
+  }
+}

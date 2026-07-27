@@ -12,10 +12,30 @@ export function ContactForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
-    // Demo only — no data leaves the browser.
-    await new Promise((r) => setTimeout(r, 900));
-    setSending(false);
-    setSent(true);
+    try {
+      const formData = new FormData(e.currentTarget);
+      const name = (formData.get("name") as string) || "Visitor";
+      const email = (formData.get("email") as string) || "";
+      const phone = (formData.get("phone") as string) || "N/A";
+      const message = (formData.get("message") as string) || "";
+
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "contact",
+          name,
+          email,
+          phone,
+          notes: message,
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to submit contact inquiry:", err);
+    } finally {
+      setSending(false);
+      setSent(true);
+    }
   }
 
   return (
