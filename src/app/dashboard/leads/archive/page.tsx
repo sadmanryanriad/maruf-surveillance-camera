@@ -107,7 +107,7 @@ export default function ArchivedLeadsPage() {
 
         <Link
           href="/dashboard/leads"
-          className="rounded-xl bg-foreground px-4 py-2 text-xs font-bold text-background hover:bg-primary hover:text-white transition-all"
+          className="rounded-xl bg-foreground px-4 py-2 text-xs font-bold text-background hover:bg-primary hover:text-white transition-all shadow-sm"
         >
           ← Back to Active Leads
         </Link>
@@ -116,7 +116,7 @@ export default function ArchivedLeadsPage() {
       <div className="rounded-2xl border border-line bg-surface shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-xs font-semibold text-muted">
-            Loading archived leads...
+            Loading archived leads…
           </div>
         ) : archivedLeads.length === 0 ? (
           <div className="p-12 text-center text-xs font-semibold text-muted">
@@ -130,7 +130,7 @@ export default function ArchivedLeadsPage() {
                   <th className="px-4 py-4">Inquiry</th>
                   <th className="px-6 py-4">Client Contact</th>
                   <th className="px-6 py-4">Request Specs</th>
-                  <th className="px-6 py-4">Notes</th>
+                  <th className="px-6 py-4">Client Notes</th>
                   <th className="px-6 py-4">Date</th>
                   {currentRole === "admin" && <th className="px-6 py-4 text-right">Actions</th>}
                 </tr>
@@ -147,19 +147,38 @@ export default function ArchivedLeadsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="font-bold text-foreground">{lead.name}</div>
-                        <div className="text-muted text-[11px]">{lead.phone}</div>
+                        <div className="text-muted text-[11px] font-mono">{lead.phone}</div>
                         {lead.email && <div className="text-muted text-[11px]">{lead.email}</div>}
                       </td>
-                      <td className="px-6 py-4 text-muted">
-                        {lead.propertyType && <div>Prop: <strong>{lead.propertyType}</strong></div>}
-                        {lead.cameraCount && <div>Cams: <strong>{lead.cameraCount}</strong></div>}
-                        {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
-                        {!lead.propertyType && !lead.service && "—"}
+                      <td className="px-6 py-4 text-muted relative group">
+                        <div className="line-clamp-2">
+                          {lead.propertyType && <div>Prop: <strong>{lead.propertyType}</strong></div>}
+                          {lead.cameraCount && <div>Cams: <strong>{lead.cameraCount}</strong></div>}
+                          {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
+                          {!lead.propertyType && !lead.service && "—"}
+                        </div>
+                        {(lead.propertyType || lead.service) && (
+                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-64 rounded-xl border border-line bg-surface p-3 text-xs shadow-2xl text-foreground leading-relaxed pointer-events-none">
+                            <span className="block font-bold text-[10px] uppercase text-primary mb-1">📋 Request Specs:</span>
+                            {lead.propertyType && <div>Property: <strong>{lead.propertyType}</strong></div>}
+                            {lead.cameraCount && <div>Cameras: <strong>{lead.cameraCount}</strong></div>}
+                            {lead.preferredDate && <div>Preferred Date: <strong>{lead.preferredDate}</strong></div>}
+                            {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
+                          </div>
+                        )}
                       </td>
-                      <td className="px-6 py-4 text-muted max-w-xs leading-relaxed">
-                        {lead.notes || "—"}
+                      <td className="px-6 py-4 max-w-xs relative group">
+                        <div className="line-clamp-2 leading-relaxed text-foreground cursor-help">
+                          {lead.notes || "—"}
+                        </div>
+                        {lead.notes && lead.notes.length > 20 && (
+                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-72 rounded-xl border border-line bg-surface p-3 text-xs shadow-2xl text-foreground leading-relaxed pointer-events-none transition-all">
+                            <span className="block font-bold text-[10px] uppercase text-primary mb-1">💬 Full Client Note:</span>
+                            {lead.notes}
+                          </div>
+                        )}
                       </td>
-                      <td className="px-6 py-4 text-muted">
+                      <td className="px-6 py-4 text-muted font-mono">
                         {new Date(lead.createdAt).toLocaleDateString("en-GB")}
                       </td>
                       {currentRole === "admin" && (
@@ -167,14 +186,14 @@ export default function ArchivedLeadsPage() {
                           <button
                             onClick={() => handleRestoreLead(targetId)}
                             disabled={updatingId === targetId}
-                            className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-[11px] font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                            className="rounded-xl border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
                           >
                             ↩ Restore
                           </button>
                           <button
                             onClick={() => handleDeleteLead(targetId)}
                             disabled={updatingId === targetId}
-                            className="rounded-lg border border-[#c8102e]/30 px-2.5 py-1 text-[11px] font-bold text-[#c8102e] hover:bg-[#c8102e] hover:text-white transition-colors"
+                            className="rounded-xl border border-[#c8102e]/30 px-3 py-1.5 text-xs font-bold text-[#c8102e] hover:bg-[#c8102e] hover:text-white transition-all shadow-sm"
                           >
                             Delete
                           </button>

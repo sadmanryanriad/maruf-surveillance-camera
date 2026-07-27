@@ -141,33 +141,6 @@ export default function LeadsPage() {
     }
   }
 
-  async function handleDeleteLead(id: string) {
-    if (currentRole !== "admin") {
-      setErrorMsg("Permission Denied: Viewer accounts cannot delete leads.");
-      return;
-    }
-
-    if (!confirm("Are you sure you want to delete this lead?")) return;
-
-    setUpdatingId(id);
-    setErrorMsg(null);
-    try {
-      const res = await fetch(`/api/leads/${id}`, { method: "DELETE" });
-      const data = await res.json();
-
-      if (!res.ok) {
-        setErrorMsg(data.error || "Failed to delete lead.");
-        return;
-      }
-
-      setLeads((prev) => prev.filter((l) => l._id !== id && l.id !== id));
-    } catch {
-      setErrorMsg("Error deleting lead.");
-    } finally {
-      setUpdatingId(null);
-    }
-  }
-
   async function handleArchiveLead(id: string, isArchivedVal: boolean) {
     if (currentRole !== "admin") {
       setErrorMsg("Permission Denied: Viewer accounts cannot archive leads.");
@@ -229,7 +202,7 @@ export default function LeadsPage() {
         <div className="flex items-center gap-3">
           <a
             href="/dashboard/leads/archive"
-            className="rounded-xl border border-line bg-surface px-4 py-2 text-xs font-bold text-foreground hover:bg-surface-2 transition-all"
+            className="rounded-xl border border-line bg-surface px-4 py-2 text-xs font-bold text-foreground hover:bg-surface-2 transition-all flex items-center gap-1.5 shadow-sm"
           >
             📁 Archived Leads ({archivedCount}) →
           </a>
@@ -245,97 +218,88 @@ export default function LeadsPage() {
         </div>
       </div>
 
-      {errorMsg && (
-        <div className="rounded-xl border border-[#c8102e]/40 bg-[#c8102e]/10 p-3.5 text-xs font-semibold text-[#c8102e] flex items-center justify-between">
-          <span>{errorMsg}</span>
-          <button onClick={() => setErrorMsg(null)} className="font-bold text-sm">×</button>
-        </div>
-      )}
-
-      {/* Toolbar & Search */}
-      <div className="space-y-4 rounded-2xl border border-line bg-surface p-4 sm:p-5 shadow-sm">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Filters and Search Bar */}
+      <div className="rounded-2xl border border-line bg-surface p-4 sm:p-5 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <input
             type="text"
+            placeholder="Search leads by name, phone, email, notes…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search leads by name, phone, email, notes…"
-            className="w-full sm:max-w-md rounded-xl border border-line bg-background px-4 py-2.5 text-xs text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none"
+            className="flex-1 rounded-xl border border-line bg-background px-4 py-2.5 text-xs text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none"
           />
 
           <button
-            onClick={() => setOnlyBookmarked((v) => !v)}
-            className={`rounded-xl border px-4 py-2 text-xs font-bold transition-all ${
+            onClick={() => setOnlyBookmarked(!onlyBookmarked)}
+            className={`rounded-xl border px-4 py-2.5 text-xs font-bold transition-all ${
               onlyBookmarked
                 ? "border-amber-500 bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                : "border-line bg-surface-2 text-muted hover:text-foreground"
+                : "border-line bg-background text-muted hover:text-foreground"
             }`}
           >
-            {onlyBookmarked ? "⭐ Showing Bookmarked Leads" : "☆ Show Bookmarked Only"}
+            ★ Show Bookmarked Only
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-line">
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="text-xs font-bold uppercase tracking-wider text-muted">
-              Type:
-            </label>
-            <div className="flex rounded-xl bg-surface-2 p-1 border border-line text-xs font-semibold">
-              {["all", "quote", "book", "contact"].map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setFilterType(t)}
-                  className={`rounded-lg px-3 py-1.5 uppercase transition-all ${
-                    filterType === t
-                      ? "bg-foreground text-background font-bold shadow-sm"
-                      : "text-muted hover:text-foreground"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-line text-xs font-semibold">
+          <div className="flex items-center gap-2">
+            <span className="text-muted uppercase text-[10px] tracking-wider font-bold">Type:</span>
+            {["all", "quote", "book", "contact"].map((t) => (
+              <button
+                key={t}
+                onClick={() => setFilterType(t)}
+                className={`rounded-full px-3 py-1 uppercase text-[11px] font-bold transition-colors ${
+                  filterType === t
+                    ? "bg-foreground text-background"
+                    : "text-muted hover:text-foreground"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="text-xs font-bold uppercase tracking-wider text-muted">
-              Status:
-            </label>
-            <div className="flex rounded-xl bg-surface-2 p-1 border border-line text-xs font-semibold">
-              {["all", "new", "contacted", "in_progress", "completed"].map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setFilterStatus(s)}
-                  className={`rounded-lg px-3 py-1.5 uppercase transition-all ${
-                    filterStatus === s
-                      ? "bg-foreground text-background font-bold shadow-sm"
-                      : "text-muted hover:text-foreground"
-                  }`}
-                >
-                  {s.replace("_", " ")}
-                </button>
-              ))}
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="text-muted uppercase text-[10px] tracking-wider font-bold">Status:</span>
+            {["all", "new", "contacted", "in_progress", "completed"].map((s) => (
+              <button
+                key={s}
+                onClick={() => setFilterStatus(s)}
+                className={`rounded-full px-3 py-1 uppercase text-[11px] font-bold transition-colors ${
+                  filterStatus === s
+                    ? "bg-foreground text-background"
+                    : "text-muted hover:text-foreground"
+                }`}
+              >
+                {s.replace("_", " ")}
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Leads Table */}
+      {errorMsg && (
+        <div className="rounded-xl border border-[#c8102e]/30 bg-[#c8102e]/10 p-3.5 text-xs font-medium text-[#c8102e]">
+          {errorMsg}
+        </div>
+      )}
+
+      {/* Main Leads Table */}
       <div className="rounded-2xl border border-line bg-surface shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-xs font-semibold text-muted">
-            Loading MongoDB leads...
+            Loading leads database…
           </div>
         ) : filteredLeads.length === 0 ? (
           <div className="p-12 text-center text-xs font-semibold text-muted">
-            No leads found matching filter criteria.
+            No matching leads found.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-surface-2 uppercase font-bold text-muted border-b border-line">
                 <tr>
-                  <th className="px-4 py-4 text-center">⭐</th>
+                  <th className="px-3 py-4 text-center">★</th>
                   <th className="px-4 py-4">Inquiry</th>
                   <th className="px-6 py-4">Client Contact</th>
                   <th className="px-6 py-4">Request Specs</th>
@@ -352,34 +316,62 @@ export default function LeadsPage() {
                   const targetId = lead._id || lead.id || "";
                   return (
                     <tr key={targetId} className="hover:bg-surface-2/60 transition-colors">
-                      <td className="px-4 py-4 text-center">
+                      <td className="px-3 py-4 text-center">
                         <button
-                          onClick={() => handleToggleBookmark(targetId, Boolean(lead.isBookmarked))}
-                          className="text-base hover:scale-125 transition-transform"
-                          title="Bookmark Lead"
+                          onClick={() => handleToggleBookmark(targetId, !!lead.isBookmarked)}
+                          className={`text-base transition-transform hover:scale-125 ${
+                            lead.isBookmarked ? "text-amber-500" : "text-muted/40 hover:text-amber-500"
+                          }`}
+                          title={lead.isBookmarked ? "Remove Bookmark" : "Add Bookmark"}
                         >
-                          {lead.isBookmarked ? "⭐" : "☆"}
+                          ★
                         </button>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="rounded-full bg-surface-2 border border-line px-2.5 py-1 font-extrabold uppercase text-[10px]">
+                        <span
+                          className={`rounded-full px-2.5 py-1 font-extrabold uppercase text-[10px] ${
+                            lead.type === "quote"
+                              ? "bg-primary/10 text-primary border border-primary/30"
+                              : lead.type === "book"
+                              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
+                              : "bg-surface-2 text-foreground border border-line"
+                          }`}
+                        >
                           {lead.type}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="font-bold text-foreground">{lead.name}</div>
-                        <div className="text-muted text-[11px]">{lead.phone}</div>
+                        <div className="text-muted text-[11px] font-mono">{lead.phone}</div>
                         {lead.email && <div className="text-muted text-[11px]">{lead.email}</div>}
                       </td>
-                      <td className="px-6 py-4 text-muted">
-                        {lead.propertyType && <div>Prop: <strong>{lead.propertyType}</strong></div>}
-                        {lead.cameraCount && <div>Cams: <strong>{lead.cameraCount}</strong></div>}
-                        {lead.preferredDate && <div>Date: <strong>{lead.preferredDate}</strong></div>}
-                        {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
-                        {!lead.propertyType && !lead.cameraCount && !lead.service && "—"}
+                      <td className="px-6 py-4 text-muted relative group">
+                        <div className="line-clamp-2">
+                          {lead.propertyType && <div>Prop: <strong>{lead.propertyType}</strong></div>}
+                          {lead.cameraCount && <div>Cams: <strong>{lead.cameraCount}</strong></div>}
+                          {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
+                          {!lead.propertyType && !lead.service && "—"}
+                        </div>
+                        {(lead.propertyType || lead.service) && (
+                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-64 rounded-xl border border-line bg-surface p-3 text-xs shadow-2xl text-foreground leading-relaxed pointer-events-none">
+                            <span className="block font-bold text-[10px] uppercase text-primary mb-1">📋 Request Specs:</span>
+                            {lead.propertyType && <div>Property: <strong>{lead.propertyType}</strong></div>}
+                            {lead.cameraCount && <div>Cameras: <strong>{lead.cameraCount}</strong></div>}
+                            {lead.preferredDate && <div>Preferred Date: <strong>{lead.preferredDate}</strong></div>}
+                            {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
+                          </div>
+                        )}
                       </td>
-                      <td className="px-6 py-4 text-muted max-w-xs leading-relaxed">
-                        {lead.notes || "—"}
+                      <td className="px-6 py-4 max-w-xs relative group">
+                        <div className="line-clamp-2 leading-relaxed text-foreground cursor-help">
+                          {lead.notes || "—"}
+                        </div>
+                        {lead.notes && lead.notes.length > 20 && (
+                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-72 rounded-xl border border-line bg-surface p-3 text-xs shadow-2xl text-foreground leading-relaxed pointer-events-none transition-all">
+                            <span className="block font-bold text-[10px] uppercase text-primary mb-1">💬 Full Client Note:</span>
+                            {lead.notes}
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         {currentRole === "admin" ? (
@@ -387,7 +379,7 @@ export default function LeadsPage() {
                             value={lead.status}
                             disabled={updatingId === targetId}
                             onChange={(e) => handleStatusChange(targetId, e.target.value as LeadStatus)}
-                            className="rounded-lg border border-line bg-background px-2.5 py-1.5 text-xs font-bold text-foreground focus:border-primary focus:outline-none"
+                            className="rounded-xl border border-line bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:border-primary focus:outline-none shadow-xs"
                           >
                             <option value="new">🔴 NEW</option>
                             <option value="contacted">🟡 CONTACTED</option>
@@ -410,46 +402,39 @@ export default function LeadsPage() {
                       </td>
                       <td className="px-4 py-4">
                         {lead.telegramSent ? (
-                          <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-emerald-600 dark:text-emerald-400 border border-emerald-500/30" title="Sent via Telegram Bot">
-                            ✈️ Sent
+                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-extrabold uppercase text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs" title="Sent via Telegram Bot">
+                            ✈️ SENT
                           </span>
                         ) : lead.telegramError ? (
-                          <span className="rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-amber-600 dark:text-amber-400 border border-amber-500/30" title={lead.telegramError}>
-                            ⚠️ Failed
+                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 text-[10px] font-extrabold uppercase text-amber-600 dark:text-amber-400 border border-amber-500/30 shadow-xs" title={lead.telegramError}>
+                            ⚠️ FAILED
                           </span>
                         ) : (
-                          <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-muted border border-line">
-                            🕒 Pending
+                          <span className="inline-flex items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-extrabold uppercase text-muted border border-line shadow-xs">
+                            🕒 PENDING
                           </span>
                         )}
                       </td>
                       <td className="px-4 py-4">
                         <button
                           onClick={() => setActiveNotesLead(lead)}
-                          className="rounded-lg border border-line bg-surface-2 px-2.5 py-1 text-[11px] font-semibold text-foreground hover:border-primary"
+                          className="rounded-xl border border-line bg-surface-2 px-2.5 py-1 text-[11px] font-semibold text-foreground hover:border-primary transition-colors"
                         >
                           📝 ({lead.adminNotes?.length || 0})
                         </button>
                       </td>
-                      <td className="px-6 py-4 text-muted">
+                      <td className="px-6 py-4 text-muted font-mono">
                         {new Date(lead.createdAt).toLocaleDateString("en-GB")}
                       </td>
                       {currentRole === "admin" && (
-                        <td className="px-6 py-4 text-right space-x-2">
+                        <td className="px-6 py-4 text-right">
                           <button
                             onClick={() => handleArchiveLead(targetId, true)}
                             disabled={updatingId === targetId}
-                            className="rounded-lg border border-line bg-surface-2 px-2.5 py-1 text-[11px] font-bold text-foreground hover:bg-surface transition-colors"
+                            className="rounded-xl border border-line bg-surface-2 px-3 py-1.5 text-xs font-bold text-foreground hover:bg-primary hover:text-white transition-all shadow-sm cursor-pointer inline-flex items-center gap-1"
                             title="Move to Archived Leads"
                           >
                             📁 Archive
-                          </button>
-                          <button
-                            onClick={() => handleDeleteLead(targetId)}
-                            disabled={updatingId === targetId}
-                            className="rounded-lg border border-[#c8102e]/30 px-2.5 py-1 text-[11px] font-bold text-[#c8102e] hover:bg-[#c8102e] hover:text-white transition-colors"
-                          >
-                            Delete
                           </button>
                         </td>
                       )}
@@ -481,16 +466,17 @@ export default function LeadsPage() {
               </button>
             </div>
 
-            {/* Existing Notes List */}
-            <div className="max-h-60 overflow-y-auto space-y-2.5 pr-1">
+            <div className="max-h-60 overflow-y-auto space-y-3 p-1">
               {!activeNotesLead.adminNotes || activeNotesLead.adminNotes.length === 0 ? (
-                <p className="text-xs text-muted italic">No internal notes added yet.</p>
+                <p className="text-xs text-muted italic text-center py-4">
+                  No internal notes added yet.
+                </p>
               ) : (
-                activeNotesLead.adminNotes.map((n, i) => (
-                  <div key={i} className="rounded-xl border border-line bg-surface-2 p-3 text-xs space-y-1">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <strong className="text-primary">{n.author}</strong>
-                      <span className="text-muted">{new Date(n.createdAt).toLocaleString("en-GB")}</span>
+                activeNotesLead.adminNotes.map((n, idx) => (
+                  <div key={idx} className="rounded-xl border border-line bg-surface-2 p-3 text-xs space-y-1">
+                    <div className="flex justify-between text-[10px] text-muted font-mono">
+                      <span><strong>{n.author}</strong></span>
+                      <span>{new Date(n.createdAt).toLocaleString("en-GB")}</span>
                     </div>
                     <p className="text-foreground leading-relaxed">{n.text}</p>
                   </div>
@@ -498,32 +484,32 @@ export default function LeadsPage() {
               )}
             </div>
 
-            {/* Add Note Form */}
-            <form onSubmit={handleAddAdminNote} className="space-y-3 pt-2 border-t border-line">
-              <textarea
-                value={newNoteText}
-                onChange={(e) => setNewNoteText(e.target.value)}
-                placeholder="Write an internal note or update about this lead..."
-                rows={3}
-                required
-                className="w-full rounded-xl border border-line bg-background p-3 text-xs text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none"
-              />
-              <div className="flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveNotesLead(null)}
-                  className="rounded-xl border border-line bg-surface-2 px-4 py-2 text-xs font-semibold"
-                >
-                  Close
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-white hover:bg-primary/90"
-                >
-                  Add Note
-                </button>
-              </div>
-            </form>
+            {currentRole === "admin" && (
+              <form onSubmit={handleAddAdminNote} className="space-y-2 pt-2 border-t border-line">
+                <textarea
+                  value={newNoteText}
+                  onChange={(e) => setNewNoteText(e.target.value)}
+                  placeholder="Type an internal note about this client or site survey…"
+                  rows={3}
+                  className="w-full rounded-xl border border-line bg-background p-3 text-xs text-foreground focus:border-primary focus:outline-none resize-none"
+                />
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveNotesLead(null)}
+                    className="rounded-xl border border-line px-3 py-1.5 text-xs font-semibold text-muted hover:text-foreground"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-xl bg-primary px-4 py-1.5 text-xs font-bold text-white hover:bg-primary/90"
+                  >
+                    Add Internal Note
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}
