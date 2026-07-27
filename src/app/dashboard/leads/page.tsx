@@ -23,6 +23,7 @@ interface MongoLead {
   notes?: string;
   status: LeadStatus;
   isBookmarked?: boolean;
+  isArchived?: boolean;
   adminNotes?: LeadNote[];
   telegramSent?: boolean;
   telegramSentAt?: string;
@@ -167,7 +168,36 @@ export default function LeadsPage() {
     }
   }
 
+  async function handleArchiveLead(id: string, isArchivedVal: boolean) {
+    if (currentRole !== "admin") {
+      setErrorMsg("Permission Denied: Viewer accounts cannot archive leads.");
+      return;
+    }
+
+    setUpdatingId(id);
+    try {
+      const res = await fetch(`/api/leads/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isArchived: isArchivedVal }),
+      });
+
+      if (res.ok) {
+        setLeads((prev) =>
+          prev.map((l) => (l._id === id || l.id === id ? { ...l, isArchived: isArchivedVal } : l))
+        );
+      }
+    } catch {
+      setErrorMsg("Error archiving lead.");
+    } finally {
+      setUpdatingId(null);
+    }
+  }
+
+  const archivedCount = leads.filter((l) => l.isArchived).length;
+
   const filteredLeads = leads.filter((lead) => {
+    if (lead.isArchived) return false;
     if (filterType !== "all" && lead.type !== filterType) return false;
     if (filterStatus !== "all" && lead.status !== filterStatus) return false;
     if (onlyBookmarked && !lead.isBookmarked) return false;
@@ -196,7 +226,13 @@ export default function LeadsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <a
+            href="/dashboard/leads/archive"
+            className="rounded-xl border border-line bg-surface px-4 py-2 text-xs font-bold text-foreground hover:bg-surface-2 transition-all"
+          >
+            📁 Archived Leads ({archivedCount}) →
+          </a>
           <span
             className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${
               currentRole === "admin"
@@ -399,7 +435,15 @@ export default function LeadsPage() {
                         {new Date(lead.createdAt).toLocaleDateString("en-GB")}
                       </td>
                       {currentRole === "admin" && (
-                        <td className="px-6 py-4 text-right">
+                        <td className="px-6 py-4 text-right space-x-2">
+                          <button
+                            onClick={() => handleArchiveLead(targetId, true)}
+                            disabled={updatingId === targetId}
+                            className="rounded-lg border border-line bg-surface-2 px-2.5 py-1 text-[11px] font-bold text-foreground hover:bg-surface transition-colors"
+                            title="Move to Archived Leads"
+                          >
+                            📁 Archive
+                          </button>
                           <button
                             onClick={() => handleDeleteLead(targetId)}
                             disabled={updatingId === targetId}

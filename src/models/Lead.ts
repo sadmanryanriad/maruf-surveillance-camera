@@ -21,6 +21,7 @@ export interface ILead extends Document {
   notes?: string;
   status: LeadStatus;
   isBookmarked: boolean;
+  isArchived: boolean;
   adminNotes: ILeadNote[];
   telegramSent: boolean;
   telegramSentAt?: Date;
@@ -59,6 +60,7 @@ const LeadSchema: Schema<ILead> = new Schema(
       default: "new",
     },
     isBookmarked: { type: Boolean, default: false },
+    isArchived: { type: Boolean, default: false },
     adminNotes: [LeadNoteSchema],
     telegramSent: { type: Boolean, default: false },
     telegramSentAt: { type: Date },

@@ -127,18 +127,18 @@ export function ContactForm() {
               </div>
 
               <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/80 p-4 shadow-sm">
-                <a href="https://wa.me/8801760345435" target="_blank" rel="noreferrer" className="flex items-center gap-3 overflow-hidden">
+                <a href="https://wa.me/8801790424860" target="_blank" rel="noreferrer" className="flex items-center gap-3 overflow-hidden">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-bold">
                     💬
                   </span>
                   <div className="truncate">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-muted">WhatsApp / Phone</p>
-                    <p className="text-xs font-semibold text-foreground truncate">+880 1760-345435</p>
+                    <p className="text-xs font-semibold text-foreground truncate">+880 1790-424860</p>
                   </div>
                 </a>
                 <button
                   type="button"
-                  onClick={() => handleCopy("+8801760345435", "whatsapp")}
+                  onClick={() => handleCopy("+8801790424860", "whatsapp")}
                   className="rounded-lg border border-line px-2 py-1 text-[11px] font-bold text-muted hover:text-foreground"
                   title="Copy WhatsApp"
                 >
@@ -226,7 +226,7 @@ export function ContactForm() {
                 />
               </div>
 
-              {/* Phone with Flag Dropdown Selector */}
+              {/* Phone with Country Flag CDN Dropdown Selector */}
               <div>
                 <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
                   Phone / WhatsApp Number <span className="text-[#c8102e]">*</span>
@@ -240,15 +240,19 @@ export function ContactForm() {
                         setPhoneDropdownOpen(!phoneDropdownOpen);
                         setCountrySearch("");
                       }}
-                      className="flex h-full items-center gap-2 rounded-xl border border-line bg-background px-3.5 py-3 text-xs font-bold text-foreground focus:border-primary focus:outline-none"
+                      className="flex h-full items-center gap-2 rounded-xl border border-line bg-background px-3.5 py-3 text-xs font-bold text-foreground focus:border-primary focus:outline-none cursor-pointer"
                     >
-                      <span className="text-base">{selectedCountry.flag}</span>
+                      <img
+                        src={`https://flagcdn.com/w40/${selectedCountry.code.toLowerCase()}.png`}
+                        alt={selectedCountry.name}
+                        className="w-5 h-3.5 object-cover rounded-[1px] border border-line/40 shrink-0 shadow-sm"
+                      />
                       <span>{selectedCountry.dial}</span>
                       <span className="text-muted text-[10px]">▼</span>
                     </button>
 
                     {phoneDropdownOpen && (
-                      <div className="absolute top-full left-0 z-50 mt-2 w-64 max-h-60 overflow-hidden rounded-xl border border-line bg-surface shadow-2xl flex flex-col">
+                      <div className="absolute top-full left-0 z-50 mt-2 w-72 max-h-60 overflow-hidden rounded-xl border border-line bg-surface shadow-2xl flex flex-col">
                         <div className="p-2 border-b border-line">
                           <input
                             type="text"
@@ -268,13 +272,17 @@ export function ContactForm() {
                                 setCountryCode(c.dial);
                                 setPhoneDropdownOpen(false);
                               }}
-                              className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs transition-colors hover:bg-surface-2 ${
+                              className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs transition-colors hover:bg-surface-2 cursor-pointer ${
                                 c.dial === countryCode ? "bg-primary/10 text-primary font-bold" : "text-foreground"
                               }`}
                             >
-                              <span className="flex items-center gap-2">
-                                <span className="text-base">{c.flag}</span>
-                                <span className="truncate max-w-[110px]">{c.name}</span>
+                              <span className="flex items-center gap-2.5">
+                                <img
+                                  src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`}
+                                  alt=""
+                                  className="w-5 h-3.5 object-cover rounded-[1px] border border-line/40 shrink-0 shadow-sm"
+                                />
+                                <span className="truncate max-w-[120px]">{c.name}</span>
                               </span>
                               <span className="font-mono text-muted">{c.dial}</span>
                             </button>
@@ -289,7 +297,7 @@ export function ContactForm() {
                     id="phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="01760-345435"
+                    placeholder="01790-424860"
                     required
                     className="flex-1 rounded-xl border border-line bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none"
                   />

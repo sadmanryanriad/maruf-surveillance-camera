@@ -15,9 +15,10 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await req.json();
-    const { status, isBookmarked, noteText } = body as {
+    const { status, isBookmarked, isArchived, noteText } = body as {
       status?: LeadStatus;
       isBookmarked?: boolean;
+      isArchived?: boolean;
       noteText?: string;
     };
 
@@ -51,6 +52,16 @@ export async function PATCH(
 
     if (isBookmarked !== undefined) {
       lead.isBookmarked = isBookmarked;
+    }
+
+    if (isArchived !== undefined) {
+      lead.isArchived = isArchived;
+      const { logActivity } = await import("@/models/ActivityLog");
+      logActivity(
+        { email: session.email, name: session.name, role: session.role },
+        isArchived ? "LEAD_ARCHIVED" : "LEAD_RESTORED",
+        `${isArchived ? "Archived" : "Restored"} lead '${lead.name}'`
+      );
     }
 
     if (noteText && noteText.trim()) {

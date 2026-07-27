@@ -14,9 +14,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   }
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="flex h-screen max-h-screen overflow-hidden bg-background text-foreground">
       {/* Sidebar Navigation */}
-      <aside className="w-64 shrink-0 border-r border-line bg-surface/90 backdrop-blur-md hidden md:flex md:flex-col justify-between p-6">
+      <aside className="w-64 shrink-0 border-r border-line bg-surface/90 backdrop-blur-md hidden md:flex md:flex-col justify-between p-6 h-full overflow-y-auto">
         <div className="space-y-8">
           <div>
             <Logo className="h-8 w-auto" />
