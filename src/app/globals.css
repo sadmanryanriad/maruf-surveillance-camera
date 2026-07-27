@@ -58,8 +58,25 @@
   --on-primary: #ffffff;
   --accent-red: #ff334b;
   --rating: #ffc24d;
-  --line: #162846;
-  --live: #C8102E;
+  --line: #162a4d;
+  --live: #ff334b;
+}
+
+/* ---------------------------- LOGO THEME SWITCHING ----------------- */
+.logo-light {
+  display: block;
+}
+.logo-dark {
+  display: none;
+}
+
+[data-theme="dark"] .logo-light,
+.dark .logo-light {
+  display: none !important;
+}
+[data-theme="dark"] .logo-dark,
+.dark .logo-dark {
+  display: block !important;
 }
 
 /* ------------------------------ base ----------------------------- */

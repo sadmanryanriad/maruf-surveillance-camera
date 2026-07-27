@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/site";
 
-export function ApertureMark({ className = "h-8 w-8" }: { className?: string }) {
+export function ApertureMark({ className = "h-8 w-auto" }: { className?: string }) {
   return (
     <Logo className={className} />
   );
@@ -12,26 +12,26 @@ export function Logo({ className = "h-8 w-auto" }: { className?: string }) {
   return (
     <Link
       href="/"
-      className="group flex items-center gap-2 text-foreground"
+      className="group inline-flex items-center text-foreground"
       aria-label={`${site.name} home`}
     >
-      {/* Light theme logo (blue text) */}
+      {/* Light theme logo (for light background) */}
       <Image
         src="/logo-light.svg"
         alt="Maruf Silhouette Security Solutions"
         width={240}
         height={67}
         priority
-        className={`dark:hidden block object-contain ${className}`}
+        className={`logo-light object-contain ${className}`}
       />
-      {/* Dark theme logo (white text) */}
+      {/* Dark theme logo (for dark background) */}
       <Image
         src="/logo-dark.svg"
         alt="Maruf Silhouette Security Solutions"
         width={240}
         height={67}
         priority
-        className={`hidden dark:block object-contain ${className}`}
+        className={`logo-dark object-contain ${className}`}
       />
     </Link>
   );
