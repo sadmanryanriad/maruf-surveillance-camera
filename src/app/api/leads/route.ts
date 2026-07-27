@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentAdminSession } from "@/lib/auth-session";
 import { connectToDatabase } from "@/lib/db";
-import Lead, { LeadType } from "@/models/Lead";
+import Lead, { LeadType, ILead } from "@/models/Lead";
 import { sendLeadTelegramNotification } from "@/lib/telegram";
 
 export async function GET() {
@@ -16,7 +16,6 @@ export async function GET() {
     return NextResponse.json({ leads, currentRole: session.role });
   } catch (err) {
     console.error("Database error in GET /api/leads:", err);
-    // Fallback to local file store if DB fails
     const { getAllLeads } = await import("@/lib/leads-store");
     const fallbackLeads = getAllLeads();
     return NextResponse.json({ leads: fallbackLeads, currentRole: session.role, isFallback: true });
@@ -57,12 +56,13 @@ export async function POST(req: Request) {
 
     const leadType: LeadType = ["quote", "book", "contact"].includes(type) ? type : "contact";
 
-    let leadDoc: Record<string, unknown> | null = null;
+    let leadDoc: ILead | null = null;
+    let fallbackId: string | null = null;
 
-    // Fault-tolerant DB Save: Try saving to MongoDB first
+    // Fault-tolerant DB Save
     try {
       await connectToDatabase();
-      const newLead = await Lead.create({
+      leadDoc = await Lead.create({
         type: leadType,
         name: name.trim(),
         email: email?.trim(),
@@ -75,20 +75,8 @@ export async function POST(req: Request) {
         status: "new",
         isBookmarked: false,
         adminNotes: [],
+        telegramSent: false,
       });
-      leadDoc = {
-        id: newLead._id.toString(),
-        type: newLead.type,
-        name: newLead.name,
-        email: newLead.email,
-        phone: newLead.phone,
-        propertyType: newLead.propertyType,
-        cameraCount: newLead.cameraCount,
-        preferredDate: newLead.preferredDate,
-        service: newLead.service,
-        notes: newLead.notes,
-        createdAt: newLead.createdAt,
-      };
     } catch (dbErr) {
       console.error("MongoDB save failed, falling back to local file store:", dbErr);
       const { createLead } = await import("@/lib/leads-store");
@@ -103,44 +91,55 @@ export async function POST(req: Request) {
         service,
         notes: notes?.trim(),
       });
-      leadDoc = {
-        id: fallbackLead.id,
-        type: fallbackLead.type,
-        name: fallbackLead.name,
-        email: fallbackLead.email,
-        phone: fallbackLead.phone,
-        propertyType: fallbackLead.propertyType,
-        cameraCount: fallbackLead.cameraCount,
-        preferredDate: fallbackLead.preferredDate,
-        service: fallbackLead.service,
-        notes: fallbackLead.notes,
-        createdAt: fallbackLead.createdAt,
-      };
+      fallbackId = fallbackLead.id;
     }
 
-    // Fault-tolerant Telegram Notification: Attempt Telegram dispatch asynchronously
-    if (leadDoc) {
-      sendLeadTelegramNotification({
-        id: (leadDoc.id as string) || "N/A",
-        type: (leadDoc.type as LeadType) || "contact",
-        name: (leadDoc.name as string) || name,
-        email: (leadDoc.email as string) || email,
-        phone: (leadDoc.phone as string) || phone,
-        propertyType: leadDoc.propertyType as string,
-        cameraCount: leadDoc.cameraCount as string,
-        preferredDate: leadDoc.preferredDate as string,
-        service: leadDoc.service as string,
-        notes: leadDoc.notes as string,
-        createdAt: (leadDoc.createdAt as Date) || new Date(),
-      }).catch((tgErr) => {
-        console.error("Telegram notification error:", tgErr);
+    // Telegram Notification Dispatch with per-lead status tracking
+    const targetLeadId = leadDoc ? leadDoc._id.toString() : fallbackId || "N/A";
+
+    sendLeadTelegramNotification({
+      id: targetLeadId,
+      type: leadType,
+      name,
+      email,
+      phone,
+      propertyType,
+      cameraCount,
+      preferredDate,
+      service,
+      notes,
+      createdAt: leadDoc ? leadDoc.createdAt : new Date(),
+    })
+      .then(async (results) => {
+        const allOk = results.length > 0 && results.every((r) => r.ok);
+        const errDescs = results
+          .filter((r) => !r.ok)
+          .map((r) => r.description)
+          .filter(Boolean)
+          .join("; ");
+
+        if (leadDoc) {
+          try {
+            await connectToDatabase();
+            leadDoc.telegramSent = allOk;
+            leadDoc.telegramSentAt = new Date();
+            if (!allOk) {
+              leadDoc.telegramError = errDescs || "Failed to deliver Telegram message.";
+            }
+            await leadDoc.save();
+          } catch (updateErr) {
+            console.error("Error updating lead Telegram status in DB:", updateErr);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Telegram notification error:", err);
       });
-    }
 
     return NextResponse.json({
       success: true,
       message: "Inquiry submitted successfully.",
-      leadId: leadDoc?.id,
+      leadId: targetLeadId,
     });
   } catch (err) {
     console.error("Error in POST /api/leads:", err);

@@ -41,6 +41,12 @@ export async function PATCH(
         );
       }
       lead.status = status;
+      const { logActivity } = await import("@/models/ActivityLog");
+      logActivity(
+        { email: session.email, name: session.name, role: session.role },
+        "STATUS_UPDATE",
+        `Updated lead status for '${lead.name}' to ${status.toUpperCase()}`
+      );
     }
 
     if (isBookmarked !== undefined) {
@@ -53,6 +59,12 @@ export async function PATCH(
         text: noteText.trim(),
         createdAt: new Date(),
       });
+      const { logActivity } = await import("@/models/ActivityLog");
+      logActivity(
+        { email: session.email, name: session.name, role: session.role },
+        "NOTE_ADDED",
+        `Added internal note to lead '${lead.name}'`
+      );
     }
 
     await lead.save();

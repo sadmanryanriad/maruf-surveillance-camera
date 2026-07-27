@@ -31,6 +31,14 @@ export async function POST(req: Request) {
 
     await setAdminSessionCookie(session);
 
+    // Audit log
+    const { logActivity } = await import("@/models/ActivityLog");
+    logActivity(
+      { email: session.email, name: session.name, role: session.role },
+      "LOGIN",
+      `Signed in to console from role ${session.role.toUpperCase()}`
+    );
+
     return NextResponse.json({
       success: true,
       role: session.role,

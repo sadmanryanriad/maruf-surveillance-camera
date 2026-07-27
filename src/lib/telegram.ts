@@ -1,5 +1,3 @@
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8647471320:AAFVMovVwGe7oX2xaTA7hGDEfKdqyA8JInU";
-
 export interface TelegramMessageResponse {
   ok: boolean;
   description?: string;
@@ -11,12 +9,18 @@ export async function sendTelegramMessage(
   text: string,
   parseMode: "HTML" | "Markdown" = "HTML"
 ): Promise<TelegramMessageResponse> {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  if (!botToken) {
+    console.warn("TELEGRAM_BOT_TOKEN environment variable is not defined.");
+    return { ok: false, description: "TELEGRAM_BOT_TOKEN environment variable is missing." };
+  }
+
   if (!chatId) {
     return { ok: false, description: "No chatId provided" };
   }
 
   try {
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -44,11 +48,11 @@ export async function getTelegramChatIds(): Promise<string[]> {
       return setting.telegramChatIds;
     }
   } catch (err) {
-    console.warn("Could not fetch Telegram chat IDs from MongoDB, using fallback:", err);
+    console.warn("Could not fetch Telegram chat IDs from MongoDB:", err);
   }
 
-  const defaultId = process.env.DEFAULT_TELEGRAM_CHAT_ID || "1240674937";
-  return [defaultId];
+  const defaultId = process.env.DEFAULT_TELEGRAM_CHAT_ID;
+  return defaultId ? [defaultId] : [];
 }
 
 export async function sendLeadTelegramNotification(
@@ -67,6 +71,9 @@ export async function sendLeadTelegramNotification(
   }
 ): Promise<TelegramMessageResponse[]> {
   const chatIds = await getTelegramChatIds();
+  if (chatIds.length === 0) {
+    return [{ ok: false, description: "No Telegram Chat IDs configured." }];
+  }
 
   const emoji =
     lead.type === "quote" ? "📋 QUOTE REQUEST" : lead.type === "book" ? "📅 SURVEY BOOKING" : "💬 CONTACT INQUIRY";
@@ -94,22 +101,6 @@ export async function sendLeadTelegramNotification(
   );
 
   return results;
-}
-
-export async function sendOtpTelegramMessage(
-  chatId: string,
-  otp: string,
-  role: "admin" | "viewer"
-): Promise<TelegramMessageResponse> {
-  const message = [
-    `<b>🔐 MARUF SECURITY — LOGIN OTP</b>`,
-    `➖➖➖➖➖➖➖➖➖➖`,
-    `Your verification code for <b>${role.toUpperCase()}</b> login is:`,
-    `\n<b><code>${otp}</code></b>\n`,
-    `<i>This code will expire in 5 minutes. Do not share this code with anyone.</i>`,
-  ].join("\n");
-
-  return sendTelegramMessage(chatId, message);
 }
 
 function escapeHtml(text: string): string {

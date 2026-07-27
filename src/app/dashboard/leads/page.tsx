@@ -24,6 +24,9 @@ interface MongoLead {
   status: LeadStatus;
   isBookmarked?: boolean;
   adminNotes?: LeadNote[];
+  telegramSent?: boolean;
+  telegramSentAt?: string;
+  telegramError?: string;
   createdAt: string;
 }
 
@@ -302,6 +305,7 @@ export default function LeadsPage() {
                   <th className="px-6 py-4">Request Specs</th>
                   <th className="px-6 py-4">Client Notes</th>
                   <th className="px-6 py-4">Status & Action</th>
+                  <th className="px-4 py-4">Telegram</th>
                   <th className="px-4 py-4">Notes</th>
                   <th className="px-6 py-4">Date</th>
                   {currentRole === "admin" && <th className="px-6 py-4 text-right">Action</th>}
@@ -365,6 +369,21 @@ export default function LeadsPage() {
                             }`}
                           >
                             {lead.status}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-4">
+                        {lead.telegramSent ? (
+                          <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-emerald-600 dark:text-emerald-400 border border-emerald-500/30" title="Sent via Telegram Bot">
+                            ✈️ Sent
+                          </span>
+                        ) : lead.telegramError ? (
+                          <span className="rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-amber-600 dark:text-amber-400 border border-amber-500/30" title={lead.telegramError}>
+                            ⚠️ Failed
+                          </span>
+                        ) : (
+                          <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-muted border border-line">
+                            🕒 Pending
                           </span>
                         )}
                       </td>
