@@ -41,6 +41,7 @@ export default function LeadsPage() {
   const [onlyBookmarked, setOnlyBookmarked] = useState(false);
 
   const [activeNotesLead, setActiveNotesLead] = useState<MongoLead | null>(null);
+  const [activeTooltipId, setActiveTooltipId] = useState<string | null>(null);
   const [newNoteText, setNewNoteText] = useState("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -199,15 +200,15 @@ export default function LeadsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <a
             href="/dashboard/leads/archive"
-            className="rounded-xl border border-line bg-surface px-4 py-2 text-xs font-bold text-foreground hover:bg-surface-2 transition-all flex items-center gap-1.5 shadow-sm"
+            className="rounded-xl border border-line bg-surface px-4 py-2 text-xs font-bold text-foreground hover:bg-surface-2 transition-all flex items-center gap-1.5 shadow-sm whitespace-nowrap"
           >
             📁 Archived Leads ({archivedCount}) →
           </a>
           <span
-            className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${
+            className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
               currentRole === "admin"
                 ? "bg-[#c8102e]/10 text-[#c8102e] border border-[#c8102e]/30"
                 : "bg-primary/10 text-primary border border-primary/30"
@@ -231,7 +232,7 @@ export default function LeadsPage() {
 
           <button
             onClick={() => setOnlyBookmarked(!onlyBookmarked)}
-            className={`rounded-xl border px-4 py-2.5 text-xs font-bold transition-all ${
+            className={`rounded-xl border px-4 py-2.5 text-xs font-bold transition-all whitespace-nowrap ${
               onlyBookmarked
                 ? "border-amber-500 bg-amber-500/10 text-amber-600 dark:text-amber-400"
                 : "border-line bg-background text-muted hover:text-foreground"
@@ -242,7 +243,7 @@ export default function LeadsPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-line text-xs font-semibold">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-muted uppercase text-[10px] tracking-wider font-bold">Type:</span>
             {["all", "quote", "book", "contact"].map((t) => (
               <button
@@ -259,7 +260,7 @@ export default function LeadsPage() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-muted uppercase text-[10px] tracking-wider font-bold">Status:</span>
             {["all", "new", "contacted", "in_progress", "completed"].map((s) => (
               <button
@@ -285,7 +286,7 @@ export default function LeadsPage() {
       )}
 
       {/* Main Leads Table */}
-      <div className="rounded-2xl border border-line bg-surface shadow-sm overflow-hidden">
+      <div className="rounded-2xl border border-line bg-surface shadow-sm">
         {loading ? (
           <div className="p-12 text-center text-xs font-semibold text-muted">
             Loading leads database…
@@ -295,7 +296,7 @@ export default function LeadsPage() {
             No matching leads found.
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-2xl">
             <table className="w-full text-left text-xs">
               <thead className="bg-surface-2 uppercase font-bold text-muted border-b border-line">
                 <tr>
@@ -314,6 +315,8 @@ export default function LeadsPage() {
               <tbody className="divide-y divide-line">
                 {filteredLeads.map((lead) => {
                   const targetId = lead._id || lead.id || "";
+                  const isTooltipOpen = activeTooltipId === targetId;
+
                   return (
                     <tr key={targetId} className="hover:bg-surface-2/60 transition-colors">
                       <td className="px-3 py-4 text-center">
@@ -329,7 +332,7 @@ export default function LeadsPage() {
                       </td>
                       <td className="px-4 py-4">
                         <span
-                          className={`rounded-full px-2.5 py-1 font-extrabold uppercase text-[10px] ${
+                          className={`rounded-full px-2.5 py-1 font-extrabold uppercase text-[10px] whitespace-nowrap ${
                             lead.type === "quote"
                               ? "bg-primary/10 text-primary border border-primary/30"
                               : lead.type === "book"
@@ -342,44 +345,49 @@ export default function LeadsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="font-bold text-foreground">{lead.name}</div>
-                        <div className="text-muted text-[11px] font-mono">{lead.phone}</div>
+                        <div className="text-muted text-[11px] font-mono whitespace-nowrap">{lead.phone}</div>
                         {lead.email && <div className="text-muted text-[11px]">{lead.email}</div>}
                       </td>
-                      <td className="px-6 py-4 text-muted relative group">
-                        <div className="line-clamp-2">
+                      <td className="px-6 py-4 text-muted min-w-[140px]">
+                        <div>
                           {lead.propertyType && <div>Prop: <strong>{lead.propertyType}</strong></div>}
                           {lead.cameraCount && <div>Cams: <strong>{lead.cameraCount}</strong></div>}
                           {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
                           {!lead.propertyType && !lead.service && "—"}
                         </div>
-                        {(lead.propertyType || lead.service) && (
-                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-64 rounded-xl border border-line bg-surface p-3 text-xs shadow-2xl text-foreground leading-relaxed pointer-events-none">
-                            <span className="block font-bold text-[10px] uppercase text-primary mb-1">📋 Request Specs:</span>
-                            {lead.propertyType && <div>Property: <strong>{lead.propertyType}</strong></div>}
-                            {lead.cameraCount && <div>Cameras: <strong>{lead.cameraCount}</strong></div>}
-                            {lead.preferredDate && <div>Preferred Date: <strong>{lead.preferredDate}</strong></div>}
-                            {lead.service && <div>Service: <strong>{lead.service}</strong></div>}
-                          </div>
-                        )}
                       </td>
-                      <td className="px-6 py-4 max-w-xs relative group">
-                        <div className="line-clamp-2 leading-relaxed text-foreground cursor-help">
+
+                      {/* Client Notes Column with Non-Overlapping Interactive Tooltip */}
+                      <td className="px-6 py-4 max-w-xs relative">
+                        <div
+                          title={lead.notes}
+                          onMouseEnter={() => setActiveTooltipId(targetId)}
+                          onMouseLeave={() => setActiveTooltipId(null)}
+                          className="line-clamp-2 leading-relaxed text-foreground cursor-help"
+                        >
                           {lead.notes || "—"}
                         </div>
-                        {lead.notes && lead.notes.length > 20 && (
-                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-72 rounded-xl border border-line bg-surface p-3 text-xs shadow-2xl text-foreground leading-relaxed pointer-events-none transition-all">
-                            <span className="block font-bold text-[10px] uppercase text-primary mb-1">💬 Full Client Note:</span>
-                            {lead.notes}
+
+                        {/* Interactive Tooltip Card cleanly positioned below text */}
+                        {isTooltipOpen && lead.notes && lead.notes.length > 20 && (
+                          <div className="absolute top-full mt-1.5 left-2 z-[99] w-72 rounded-2xl border border-primary/40 bg-surface p-4 text-xs shadow-2xl text-foreground leading-relaxed transition-all pointer-events-none">
+                            <div className="flex items-center gap-1.5 font-bold text-[10px] uppercase tracking-wider text-primary mb-1.5">
+                              <span>💬</span> Full Client Note:
+                            </div>
+                            <p className="whitespace-normal break-words text-foreground font-normal">
+                              {lead.notes}
+                            </p>
                           </div>
                         )}
                       </td>
+
                       <td className="px-6 py-4">
                         {currentRole === "admin" ? (
                           <select
                             value={lead.status}
                             disabled={updatingId === targetId}
                             onChange={(e) => handleStatusChange(targetId, e.target.value as LeadStatus)}
-                            className="rounded-xl border border-line bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:border-primary focus:outline-none shadow-xs"
+                            className="rounded-xl border border-line bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:border-primary focus:outline-none shadow-xs cursor-pointer"
                           >
                             <option value="new">🔴 NEW</option>
                             <option value="contacted">🟡 CONTACTED</option>
@@ -388,7 +396,7 @@ export default function LeadsPage() {
                           </select>
                         ) : (
                           <span
-                            className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase ${
+                            className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase whitespace-nowrap ${
                               lead.status === "new"
                                 ? "bg-[#c8102e]/10 text-[#c8102e]"
                                 : lead.status === "completed"
@@ -400,30 +408,42 @@ export default function LeadsPage() {
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-4">
+
+                      {/* Single Line Telegram Badge */}
+                      <td className="px-4 py-4 whitespace-nowrap">
                         {lead.telegramSent ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-extrabold uppercase text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs" title="Sent via Telegram Bot">
-                            ✈️ SENT
+                          <span
+                            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-500/10 px-3 py-1.5 text-[10px] font-extrabold uppercase text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs"
+                            title="Sent via Telegram Bot"
+                          >
+                            <span>✈️</span>
+                            <span>SENT</span>
                           </span>
                         ) : lead.telegramError ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 text-[10px] font-extrabold uppercase text-amber-600 dark:text-amber-400 border border-amber-500/30 shadow-xs" title={lead.telegramError}>
-                            ⚠️ FAILED
+                          <span
+                            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-amber-500/10 px-3 py-1.5 text-[10px] font-extrabold uppercase text-amber-600 dark:text-amber-400 border border-amber-500/30 shadow-xs"
+                            title={lead.telegramError}
+                          >
+                            <span>⚠️</span>
+                            <span>FAILED</span>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-extrabold uppercase text-muted border border-line shadow-xs">
-                            🕒 PENDING
+                          <span className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-surface-2 px-3 py-1.5 text-[10px] font-extrabold uppercase text-muted border border-line shadow-xs">
+                            <span>🕒</span>
+                            <span>PENDING</span>
                           </span>
                         )}
                       </td>
+
                       <td className="px-4 py-4">
                         <button
                           onClick={() => setActiveNotesLead(lead)}
-                          className="rounded-xl border border-line bg-surface-2 px-2.5 py-1 text-[11px] font-semibold text-foreground hover:border-primary transition-colors"
+                          className="rounded-xl border border-line bg-surface-2 px-2.5 py-1 text-[11px] font-semibold text-foreground hover:border-primary transition-colors whitespace-nowrap"
                         >
                           📝 ({lead.adminNotes?.length || 0})
                         </button>
                       </td>
-                      <td className="px-6 py-4 text-muted font-mono">
+                      <td className="px-6 py-4 text-muted font-mono whitespace-nowrap">
                         {new Date(lead.createdAt).toLocaleDateString("en-GB")}
                       </td>
                       {currentRole === "admin" && (
@@ -431,7 +451,7 @@ export default function LeadsPage() {
                           <button
                             onClick={() => handleArchiveLead(targetId, true)}
                             disabled={updatingId === targetId}
-                            className="rounded-xl border border-line bg-surface-2 px-3 py-1.5 text-xs font-bold text-foreground hover:bg-primary hover:text-white transition-all shadow-sm cursor-pointer inline-flex items-center gap-1"
+                            className="rounded-xl border border-line bg-surface-2 px-3 py-1.5 text-xs font-bold text-foreground hover:bg-primary hover:text-white transition-all shadow-sm cursor-pointer inline-flex items-center gap-1 whitespace-nowrap"
                             title="Move to Archived Leads"
                           >
                             📁 Archive
