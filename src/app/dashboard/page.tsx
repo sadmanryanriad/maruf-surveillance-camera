@@ -178,8 +178,14 @@ export default async function DashboardOverviewPage() {
                         {lead.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-muted font-mono text-[11px]">
-                      {new Date(lead.createdAt).toLocaleString("en-GB")}
+                    <td className="px-6 py-4 text-muted font-mono text-xs whitespace-nowrap">
+                      {new Date(lead.createdAt).toLocaleString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </td>
                   </tr>
                 ))}

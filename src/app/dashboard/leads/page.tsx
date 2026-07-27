@@ -360,7 +360,6 @@ export default function LeadsPage() {
                       {/* Client Notes Column with Non-Overlapping Interactive Tooltip */}
                       <td className="px-6 py-4 max-w-xs relative">
                         <div
-                          title={lead.notes}
                           onMouseEnter={() => setActiveTooltipId(targetId)}
                           onMouseLeave={() => setActiveTooltipId(null)}
                           className="line-clamp-2 leading-relaxed text-foreground cursor-help"
@@ -444,7 +443,13 @@ export default function LeadsPage() {
                         </button>
                       </td>
                       <td className="px-6 py-4 text-muted font-mono whitespace-nowrap">
-                        {new Date(lead.createdAt).toLocaleDateString("en-GB")}
+                        {new Date(lead.createdAt).toLocaleString("en-GB", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </td>
                       {currentRole === "admin" && (
                         <td className="px-6 py-4 text-right">
