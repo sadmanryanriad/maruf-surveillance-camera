@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface UserItem {
   _id: string;
@@ -17,12 +18,15 @@ export default function UsersAndSettingsPage() {
   const [newChatId, setNewChatId] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Site Contact Details state
-  const [contactPhone, setContactPhone] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactAddress, setContactAddress] = useState("");
-  const [contactHours, setContactHours] = useState("");
-  const [contactMsg, setContactMsg] = useState<{ text: string; isError: boolean } | null>(null);
+  // Site Contact Details & WhatsApp state
+  const [contactPhone, setContactPhone] = useState("+880 1790-424860");
+  const [contactEmail, setContactEmail] = useState("hello@maruf-security.com");
+  const [contactAddress, setContactAddress] = useState("24 Watchtower Ave, Suite 300, Metro City");
+  const [contactHours, setContactHours] = useState("Mon-Sat · 8am-8pm");
+  const [whatsappNumber, setWhatsappNumber] = useState("8801790424860");
+
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [savingContact, setSavingContact] = useState(false);
 
   // Password change state
   const [oldPassword, setOldPassword] = useState("");
@@ -58,10 +62,11 @@ export default function UsersAndSettingsPage() {
       if (sRes.ok) {
         const sData = await sRes.json();
         if (sData.setting) {
-          setContactPhone(sData.setting.phone || "");
-          setContactEmail(sData.setting.email || "");
-          setContactAddress(sData.setting.address || "");
-          setContactHours(sData.setting.hours || "");
+          setContactPhone(sData.setting.phone || "+880 1790-424860");
+          setContactEmail(sData.setting.email || "hello@maruf-security.com");
+          setContactAddress(sData.setting.address || "24 Watchtower Ave, Suite 300, Metro City");
+          setContactHours(sData.setting.hours || "Mon-Sat · 8am-8pm");
+          setWhatsappNumber(sData.setting.whatsappNumber || "8801790424860");
         }
       }
     } catch {
@@ -75,9 +80,16 @@ export default function UsersAndSettingsPage() {
     loadData();
   }, []);
 
-  async function handleUpdateContactInfo(e: React.FormEvent) {
+  function handleSaveClick(e: React.FormEvent) {
     e.preventDefault();
-    setContactMsg(null);
+    setConfirmModalOpen(true);
+  }
+
+  async function confirmSaveContactInfo() {
+    setConfirmModalOpen(false);
+    setSavingContact(true);
+
+    const toastId = toast.loading("Saving public site contact details...");
 
     try {
       const res = await fetch("/api/settings", {
@@ -88,18 +100,21 @@ export default function UsersAndSettingsPage() {
           email: contactEmail,
           address: contactAddress,
           hours: contactHours,
+          whatsappNumber: whatsappNumber,
         }),
       });
       const data = await res.json();
 
       if (!res.ok) {
-        setContactMsg({ text: data.error || "Failed to update contact info.", isError: true });
+        toast.error(data.error || "Failed to update contact info.", { id: toastId });
         return;
       }
 
-      setContactMsg({ text: "Site contact information updated & logged!", isError: false });
+      toast.success("Site contact details & floating WhatsApp updated live!", { id: toastId });
     } catch {
-      setContactMsg({ text: "Error updating contact info.", isError: true });
+      toast.error("Network error updating contact info.", { id: toastId });
+    } finally {
+      setSavingContact(false);
     }
   }
 
@@ -123,6 +138,7 @@ export default function UsersAndSettingsPage() {
       setPwdMsg({ text: "Password updated successfully!", isError: false });
       setOldPassword("");
       setNewPassword("");
+      toast.success("Password updated successfully!");
     } catch {
       setPwdMsg({ text: "Error changing password.", isError: true });
     }
@@ -147,10 +163,12 @@ export default function UsersAndSettingsPage() {
 
       if (!res.ok) {
         setUserMsg({ text: data.error || "Failed to create user.", isError: true });
+        toast.error(data.error || "Failed to create user.");
         return;
       }
 
       setUserMsg({ text: `User ${newUserEmail} created successfully!`, isError: false });
+      toast.success(`User ${newUserEmail} created!`);
       setNewUserEmail("");
       setNewUserName("");
       setNewUserPassword("");
@@ -168,13 +186,14 @@ export default function UsersAndSettingsPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.error || "Failed to delete user.");
+        toast.error(data.error || "Failed to delete user.");
         return;
       }
 
+      toast.success("User deleted.");
       setUsers((prev) => prev.filter((u) => u._id !== id));
     } catch {
-      alert("Error deleting user.");
+      toast.error("Error deleting user.");
     }
   }
 
@@ -194,9 +213,10 @@ export default function UsersAndSettingsPage() {
       if (res.ok) {
         setChatIds(data.telegramChatIds || updated);
         setNewChatId("");
+        toast.success("Telegram Chat ID added!");
       }
     } catch {
-      alert("Failed to update Telegram Chat IDs.");
+      toast.error("Failed to update Telegram Chat IDs.");
     }
   }
 
@@ -212,9 +232,10 @@ export default function UsersAndSettingsPage() {
 
       if (res.ok) {
         setChatIds(data.telegramChatIds || updated);
+        toast.success("Telegram Chat ID removed.");
       }
     } catch {
-      alert("Failed to remove Telegram Chat ID.");
+      toast.error("Failed to remove Telegram Chat ID.");
     }
   }
 
@@ -230,18 +251,18 @@ export default function UsersAndSettingsPage() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        {/* Manage Site Contact Information */}
-        <div className="rounded-2xl border border-line bg-surface p-6 shadow-sm space-y-5">
+        {/* Manage Site Contact Information & Live Preview */}
+        <div className="rounded-2xl border border-line bg-surface p-6 shadow-sm space-y-6">
           <div>
             <h2 className="font-display text-lg font-bold text-foreground">
               Site Contact Information
             </h2>
             <p className="text-xs text-muted mt-0.5">
-              Update phone, email, address, and hours shown on website.
+              Update phone, email, address, hours, and floating WhatsApp number.
             </p>
           </div>
 
-          <form onSubmit={handleUpdateContactInfo} className="space-y-4">
+          <form onSubmit={handleSaveClick} className="space-y-4">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
                 Contact Phone
@@ -298,27 +319,65 @@ export default function UsersAndSettingsPage() {
               />
             </div>
 
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">
+                Floating WhatsApp Phone Number (Digits Only)
+              </label>
+              <input
+                type="text"
+                value={whatsappNumber}
+                disabled={currentRole !== "admin"}
+                onChange={(e) => setWhatsappNumber(e.target.value)}
+                placeholder="8801790424860"
+                required
+                className="w-full rounded-xl border border-line bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none font-mono"
+              />
+            </div>
+
             {currentRole === "admin" && (
               <button
                 type="submit"
-                className="rounded-xl bg-foreground px-5 py-2.5 text-xs font-bold text-background hover:bg-primary hover:text-white transition-all shadow-sm"
+                disabled={savingContact}
+                className="rounded-xl bg-foreground px-5 py-2.5 text-xs font-bold text-background hover:bg-primary hover:text-white transition-all shadow-sm disabled:opacity-60"
               >
-                Save Contact Info
+                {savingContact ? "Saving..." : "Save Contact Info"}
               </button>
             )}
-
-            {contactMsg && (
-              <div
-                className={`rounded-xl border p-3 text-xs font-medium ${
-                  contactMsg.isError
-                    ? "border-[#c8102e]/30 bg-[#c8102e]/10 text-[#c8102e]"
-                    : "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                }`}
-              >
-                {contactMsg.text}
-              </div>
-            )}
           </form>
+
+          {/* Live Site Preview Component */}
+          <div className="pt-4 border-t border-line space-y-3">
+            <span className="block text-xs font-bold uppercase tracking-wider text-primary">
+              🖥️ Live Site Contact Card Preview:
+            </span>
+            <div className="rounded-2xl border border-primary/30 bg-surface-2 p-5 shadow-inner space-y-4 text-xs">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border-l-2 border-primary/50 pl-3">
+                  <span className="block text-[10px] font-bold text-muted uppercase">CALL</span>
+                  <span className="font-semibold text-foreground">{contactPhone}</span>
+                </div>
+                <div className="border-l-2 border-primary/50 pl-3">
+                  <span className="block text-[10px] font-bold text-muted uppercase">EMAIL</span>
+                  <span className="font-semibold text-foreground truncate block">{contactEmail}</span>
+                </div>
+                <div className="border-l-2 border-primary/50 pl-3">
+                  <span className="block text-[10px] font-bold text-muted uppercase">VISIT</span>
+                  <span className="font-semibold text-foreground">{contactAddress}</span>
+                </div>
+                <div className="border-l-2 border-primary/50 pl-3">
+                  <span className="block text-[10px] font-bold text-muted uppercase">HOURS</span>
+                  <span className="font-semibold text-foreground">{contactHours}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-line text-[11px] text-muted">
+                <span>Floating WhatsApp Button Target:</span>
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                  https://wa.me/{whatsappNumber.replace(/[^0-9]/g, "")}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Change Self Password Card */}
@@ -581,6 +640,41 @@ export default function UsersAndSettingsPage() {
                 ))}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Save Confirmation Modal */}
+      {confirmModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-2xl space-y-4">
+            <h3 className="font-display text-lg font-bold text-foreground">
+              Confirm Contact Details Update
+            </h3>
+            <p className="text-xs text-muted leading-relaxed">
+              Are you sure you want to update the public site contact details and WhatsApp floating button link across the live website?
+            </p>
+            <div className="rounded-xl bg-surface-2 border border-line p-3 text-xs space-y-1">
+              <div>📞 Phone: <strong>{contactPhone}</strong></div>
+              <div>✉ Email: <strong>{contactEmail}</strong></div>
+              <div>💬 WhatsApp: <strong>{whatsappNumber}</strong></div>
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setConfirmModalOpen(false)}
+                className="rounded-xl border border-line bg-surface-2 px-4 py-2 text-xs font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmSaveContactInfo}
+                className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-white hover:bg-primary/90"
+              >
+                Yes, Update Live
+              </button>
+            </div>
           </div>
         </div>
       )}

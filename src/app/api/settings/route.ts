@@ -10,10 +10,11 @@ export async function GET() {
     let setting = await Setting.findOne().lean();
     if (!setting) {
       setting = await Setting.create({
-        phone: "+880 1760-345435",
+        phone: "+880 1790-424860",
         email: "hello@maruf-security.com",
         address: "24 Watchtower Ave, Suite 300, Metro City",
         hours: "Mon-Sat · 8am-8pm",
+        whatsappNumber: "8801790424860",
         telegramChatIds: ["1240674937"],
       });
     }
@@ -36,11 +37,12 @@ export async function PATCH(req: Request) {
 
   try {
     const body = await req.json();
-    const { phone, email, address, hours } = body as {
+    const { phone, email, address, hours, whatsappNumber } = body as {
       phone?: string;
       email?: string;
       address?: string;
       hours?: string;
+      whatsappNumber?: string;
     };
 
     await connectToDatabase();
@@ -53,6 +55,7 @@ export async function PATCH(req: Request) {
     if (email !== undefined) setting.email = email.trim();
     if (address !== undefined) setting.address = address.trim();
     if (hours !== undefined) setting.hours = hours.trim();
+    if (whatsappNumber !== undefined) setting.whatsappNumber = whatsappNumber.replace(/[^0-9]/g, "");
 
     await setting.save();
 
@@ -60,7 +63,7 @@ export async function PATCH(req: Request) {
     await logActivity(
       { email: session.email, name: session.name, role: session.role },
       "CONTACT_INFO_UPDATED",
-      `Updated site contact details (Phone: ${setting.phone}, Email: ${setting.email}, Address: ${setting.address}, Hours: ${setting.hours})`
+      `Updated site contact details (Phone: ${setting.phone}, Email: ${setting.email}, Address: ${setting.address}, Hours: ${setting.hours}, WhatsApp: ${setting.whatsappNumber})`
     );
 
     return NextResponse.json({ success: true, setting });

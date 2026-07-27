@@ -5,16 +5,18 @@ export interface ISetting extends Document {
   email: string;
   address: string;
   hours: string;
+  whatsappNumber: string;
   telegramChatIds: string[];
   updatedAt: Date;
 }
 
 const SettingSchema: Schema<ISetting> = new Schema(
   {
-    phone: { type: String, default: "+880 1760-345435" },
+    phone: { type: String, default: "+880 1790-424860" },
     email: { type: String, default: "hello@maruf-security.com" },
     address: { type: String, default: "24 Watchtower Ave, Suite 300, Metro City" },
     hours: { type: String, default: "Mon-Sat · 8am-8pm" },
+    whatsappNumber: { type: String, default: "8801790424860" },
     telegramChatIds: {
       type: [String],
       default: ["1240674937"],
