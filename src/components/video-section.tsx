@@ -21,16 +21,21 @@ export function VideoSection() {
           <img src={POSTER} alt="" className="h-full w-full object-cover" />
         ) : (
           <video
+            ref={(el) => {
+              if (el) {
+                el.muted = true;
+                el.play().catch(() => {});
+              }
+            }}
             className="h-full w-full object-cover"
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             poster={POSTER}
           >
-            <source src={VIDEO_720} type="video/mp4" />
-            <source src={VIDEO_360} type="video/mp4" />
+            <source src="/videos/hero-surveillance.mp4" type="video/mp4" />
           </video>
         )}
         {/* Legibility + brand tint over the footage */}
@@ -49,7 +54,7 @@ export function VideoSection() {
               <span className="animate-live absolute inline-flex h-full w-full rounded-full bg-[#ff4d4d]" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ff4d4d]" />
             </span>
-            <span className="hud text-[#7de8f5]">Live feed · See it in action</span>
+            <span className="hud text-[#7de8f5]">LIVE FEED · SEE IT IN ACTION</span>
           </div>
           <h2 className="font-display text-3xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl">
             Your property, watched

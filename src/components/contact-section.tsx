@@ -21,7 +21,9 @@ export function ContactSection() {
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_1.1fr]">
         {/* Info */}
         <Reveal>
-          <p className="hud mb-4 text-primary-strong">// Contact us</p>
+          <p className="font-sans text-xs font-bold uppercase tracking-wider text-primary mb-3.5">
+            — Contact us
+          </p>
           <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             Let&apos;s talk about
             <br />

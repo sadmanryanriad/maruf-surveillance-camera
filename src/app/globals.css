@@ -16,26 +16,28 @@
   --color-primary-glow: var(--primary-glow);
   --color-line: var(--line);
   --color-live: var(--live);
+  --color-accent-red: var(--accent-red);
 
-  --font-display: var(--font-space-grotesk);
-  --font-sans: var(--font-plex-sans);
+  --font-display: var(--font-manrope);
+  --font-sans: var(--font-manrope);
   --font-mono: var(--font-plex-mono);
 }
 
 /* ---------------------------- LIGHT (default) --------------------- */
 :root {
-  --background: #eef2f7; /* cool "monitor haze" */
+  --background: #f4f6fa;
   --surface: #ffffff;
-  --surface-2: #f6f8fb;
-  --foreground: #0a1524; /* deep control-room navy */
-  --muted: #55657a;
-  --primary: #0891a0; /* lens cyan */
-  --primary-strong: #0b616e; /* accessible for text/links on white */
-  --primary-glow: #17c9da; /* glows/beams only */
-  --on-primary: #001318; /* text on bg-primary (AA on light cyan) */
-  --rating: #b07400; /* star gold, legible on light surfaces */
-  --line: #dbe3ee;
-  --live: #ff3b47;
+  --surface-2: #edf1f7;
+  --foreground: #012169; /* Maruf Navy Blue */
+  --muted: #4a5c78;
+  --primary: #012169; /* Maruf Navy Blue */
+  --primary-strong: #01184e;
+  --primary-glow: #1a429b;
+  --on-primary: #ffffff;
+  --accent-red: #C8102E; /* Maruf Accent Red */
+  --rating: #b07400;
+  --line: #d8e0ec;
+  --live: #C8102E;
 }
 
 /* ---------------------------- DARK -------------------------------- *
@@ -45,18 +47,19 @@
  * hydration. .dark is kept as an alias for convenience.               */
 .dark,
 [data-theme="dark"] {
-  --background: #0a0e14; /* control-room black */
-  --surface: #101826;
-  --surface-2: #0e1622;
-  --foreground: #eaf1f8;
-  --muted: #8695a8;
-  --primary: #22d3ee; /* bright lens cyan reads well on dark */
-  --primary-strong: #7de8f5;
-  --primary-glow: #22d3ee;
-  --on-primary: #04222b; /* text on bright cyan */
+  --background: #060d1b;
+  --surface: #0a162d;
+  --surface-2: #0e1e3b;
+  --foreground: #eef3fc;
+  --muted: #8fa2c4;
+  --primary: #2962ff;
+  --primary-strong: #4d7dff;
+  --primary-glow: #3d72ff;
+  --on-primary: #ffffff;
+  --accent-red: #ff334b;
   --rating: #ffc24d;
-  --line: #1c2a3a;
-  --live: #ff5a63;
+  --line: #162846;
+  --live: #C8102E;
 }
 
 /* ------------------------------ base ----------------------------- */

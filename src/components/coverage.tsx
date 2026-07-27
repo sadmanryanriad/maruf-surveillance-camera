@@ -18,7 +18,9 @@ export function Coverage() {
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
         {/* Copy */}
         <Reveal>
-          <p className="hud mb-4 text-primary-strong">// Coverage design</p>
+          <p className="font-sans text-xs font-bold uppercase tracking-wider text-primary mb-3.5">
+            — Coverage design
+          </p>
           <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             Every angle mapped before we mount a thing.
           </h2>

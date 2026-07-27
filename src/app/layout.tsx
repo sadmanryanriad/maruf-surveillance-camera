@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Manrope, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -55,7 +49,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-theme={theme}
-      className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable} h-full`}
+      className={`${manrope.variable} ${plexMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
         <SiteHeader />

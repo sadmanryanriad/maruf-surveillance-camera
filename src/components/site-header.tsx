@@ -30,11 +30,7 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "border-b border-line bg-background/80 backdrop-blur-md"
-          : "border-b border-transparent"
-      }`}
+      className={`sticky top-0 z-50 border-b border-line bg-surface/90 backdrop-blur-md shadow-sm transition-all duration-300`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
         <Logo />
@@ -46,8 +42,8 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={`text-sm font-medium transition-colors hover:text-foreground ${
-                isActive(item.href) ? "text-primary-strong" : "text-muted"
+              className={`text-sm font-semibold transition-colors hover:text-primary ${
+                isActive(item.href) ? "text-primary font-bold" : "text-foreground/80"
               }`}
             >
               {item.label}

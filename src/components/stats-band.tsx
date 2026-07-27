@@ -1,5 +1,4 @@
 import { stats } from "@/lib/site";
-import { Counter } from "./counter";
 import { Reveal } from "./reveal";
 
 export function StatsBand() {
@@ -9,7 +8,7 @@ export function StatsBand() {
         {stats.map((s, i) => (
           <Reveal key={s.label} delay={i * 0.08} className="text-center">
             <div className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              <Counter value={s.value} suffix={s.suffix} />
+              {s.value}{s.suffix}
             </div>
             <p className="mt-2 text-xs leading-snug text-muted sm:text-sm">{s.label}</p>
           </Reveal>

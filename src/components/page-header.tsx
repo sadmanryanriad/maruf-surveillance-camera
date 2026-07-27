@@ -32,7 +32,9 @@ export function PageHeader({
             <span aria-hidden>/</span>
             <span className="text-foreground">{crumb}</span>
           </nav>
-          <p className="hud mb-4 text-primary-strong">{eyebrow}</p>
+          <p className="font-sans text-xs font-bold uppercase tracking-wider text-primary mb-3.5">
+            — {eyebrow.replace(/^(\/\/|\/|-|—)\s*/, "").trim()}
+          </p>
           <h1 className="max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
             {title}
           </h1>

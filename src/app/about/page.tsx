@@ -28,7 +28,9 @@ export default function AboutPage() {
       <section className="py-20 sm:py-28">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-2">
           <Reveal>
-            <p className="hud mb-4 text-primary-strong">// Our story</p>
+            <p className="font-sans text-xs font-bold uppercase tracking-wider text-primary mb-3.5">
+              — Our story
+            </p>
             <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
               Started by installers, not salespeople.
             </h2>

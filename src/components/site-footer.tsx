@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site, socials } from "@/lib/site";
-import { ApertureMark } from "./logo";
+import { Logo } from "./logo";
 import { SocialIcon } from "./social-icons";
 
 const columns: { title: string; links: { label: string; href: string }[] }[] = [
@@ -28,15 +28,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         {/* Brand */}
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="text-primary">
-              <ApertureMark className="h-7 w-7" />
-            </span>
-            <span className="font-display text-lg font-bold">
-              {site.name}
-              <span className="text-primary">.</span>
-            </span>
-          </div>
+          <Logo className="h-9 w-auto" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
             {site.tagline} Professional surveillance for homes and businesses across
             the city.

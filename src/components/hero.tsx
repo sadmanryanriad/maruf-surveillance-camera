@@ -1,112 +1,125 @@
 "use client";
 
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
-// The 3D scene is client-only (WebGL). Load it without SSR and show a quiet
-// placeholder while it hydrates.
-const HeroScene = dynamic(() => import("./hero-scene"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-full w-full items-center justify-center">
-      <span className="hud text-white/55">initializing optics…</span>
-    </div>
-  ),
-});
-
+const POSTER = "https://assets.mixkit.co/videos/23028/23028-thumb-720-0.jpg";
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-function LiveClock() {
-  const [time, setTime] = useState<string | null>(null);
-  useEffect(() => {
-    const fmt = () =>
-      new Date().toLocaleTimeString("en-GB", { hour12: false });
-    setTime(fmt());
-    const id = setInterval(() => setTime(fmt()), 1000);
-    return () => clearInterval(id);
-  }, []);
-  // null on first paint avoids a server/client hydration mismatch.
-  return <span suppressHydrationWarning>{time ?? "--:--:--"}</span>;
-}
-
 export function Hero() {
-  return (
-    <section className="relative overflow-hidden pt-16" aria-label="Introduction">
-      {/* Ambient monitoring grid + glow */}
-      <div className="pointer-events-none absolute inset-0 bg-grid mask-fade opacity-70" />
-      <div className="pointer-events-none absolute -right-40 top-0 h-[42rem] w-[42rem] rounded-full bg-[radial-gradient(circle,var(--primary-glow),transparent_60%)] opacity-20 blur-2xl" />
+  const reduced = useReducedMotion();
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:pb-28 lg:pt-16">
-        {/* Copy */}
+  return (
+    <section className="relative isolate min-h-[85vh] flex items-center overflow-hidden bg-slate-950 pt-20 pb-20 sm:pt-28 sm:pb-28 text-white" aria-label="Introduction">
+      {/* Full-width Background Video */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <video
+          ref={(el) => {
+            if (el) {
+              el.muted = true;
+              el.defaultMuted = true;
+              el.setAttribute("muted", "");
+              el.setAttribute("playsinline", "");
+              const p = el.play();
+              if (p !== undefined) {
+                p.catch(() => {
+                  document.addEventListener("click", () => el.play(), { once: true });
+                });
+              }
+            }
+          }}
+          className="h-full w-full object-cover opacity-75 dark:opacity-85 filter brightness-95 contrast-105 scale-105 transition-opacity duration-500"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/videos/hero-surveillance.mp4" type="video/mp4" />
+        </video>
+
+        {/* High-legibility Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/60 to-slate-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40" />
+        <div className="bg-grid-feed animate-gridpan absolute inset-0 opacity-25 pointer-events-none" />
+
+        {/* Scanline Sweep */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="animate-scan absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-transparent via-[rgba(34,211,238,.18)] to-transparent" />
+        </div>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 w-full">
         <motion.div
           initial="hidden"
           animate="show"
           variants={{
             hidden: {},
-            show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+            show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
           }}
+          className="max-w-2xl"
         >
+          {/* Live Feed Badge */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.6, ease }}
-            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/70 px-3.5 py-1.5"
+            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#22d3ee]/30 bg-[#22d3ee]/10 px-4 py-1.5 backdrop-blur-md"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-live absolute inline-flex h-full w-full rounded-full bg-live" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-live" />
+              <span className="animate-live absolute inline-flex h-full w-full rounded-full bg-[#ff4d4d]" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ff4d4d]" />
             </span>
-            <span className="hud text-muted">Maruf · Security Systems</span>
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-[#7de8f5]">
+              LIVE FEED · SEE IT IN ACTION
+            </span>
           </motion.div>
 
+          {/* Main Headline */}
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="font-display text-[2.6rem] font-bold leading-[1.02] tracking-tight sm:text-6xl lg:text-[4.2rem]"
+            className="font-display text-4xl font-extrabold leading-[1.04] tracking-tight text-white sm:text-6xl lg:text-[4.2rem]"
           >
-            Eyes on everything
+            Your property, watched
             <br />
-            that <span className="text-primary-strong">matters to you</span>.
+            in <span className="text-[#22d3ee]">real time</span>.
           </motion.h1>
 
+          {/* Subtitle */}
           <motion.p
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="mt-6 max-w-xl text-lg leading-relaxed text-muted"
+            className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 font-sans"
           >
-            Professionally designed and installed surveillance systems for homes and
-            businesses. Clean installs, sharp footage day and night, and monitoring
-            that reaches you wherever you are.
+            Crisp day-and-night footage, streamed to your phone and backed up the moment it&apos;s captured. This is what peace of mind looks like.
           </motion.p>
 
+          {/* Action CTAs */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            className="mt-8 flex flex-wrap gap-4"
           >
             <Link
               href="/quote"
-              className="group rounded-xl bg-foreground px-6 py-3.5 text-sm font-semibold text-surface transition-all hover:shadow-[0_10px_40px_-10px_var(--primary-glow)]"
+              className="group inline-flex items-center gap-2 rounded-full bg-[#22d3ee] px-7 py-3.5 text-sm font-bold text-[#04222b] transition-all hover:bg-[#7de8f5] shadow-lg shadow-[#22d3ee]/20"
             >
               Get a free quote
-              <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">
-                →
-              </span>
+              <span className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
             <Link
-              href="#services"
-              className="rounded-xl border border-line bg-surface/60 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary-strong"
+              href="/book"
+              className="rounded-full border border-white/25 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:border-white/60 hover:bg-white/20"
             >
-              Explore services
+              Book a survey
             </Link>
           </motion.div>
 
-          {/* Trust stats */}
+          {/* Trust Stats */}
           <motion.dl
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-7"
+            className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-7"
           >
             {[
               { k: "500+", v: "Systems installed" },
@@ -114,70 +127,15 @@ export function Hero() {
               { k: "4K", v: "Ultra-HD clarity" },
             ].map((s) => (
               <div key={s.v}>
-                <dt className="font-display text-3xl font-bold tracking-tight">
+                <dt className="font-display text-3xl font-extrabold tracking-tight text-white">
                   {s.k}
                 </dt>
-                <dd className="mt-1 text-xs leading-snug text-muted">{s.v}</dd>
+                <dd className="mt-1 text-xs leading-snug text-white/70 font-sans">{s.v}</dd>
               </div>
             ))}
           </motion.dl>
         </motion.div>
-
-        {/* 3D stage */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease, delay: 0.15 }}
-          className="relative order-first aspect-square w-full lg:order-last lg:aspect-[4/5]"
-        >
-          {/* Framed monitor viewport — always dark (it's a live feed), so the
-              light-shelled camera pops in both light and dark themes. */}
-          <div className="absolute inset-0 overflow-hidden rounded-3xl border border-white/10 bg-[radial-gradient(120%_120%_at_70%_10%,#0f1b26,#070b11_72%)] shadow-[0_40px_100px_rgba(0,0,0,.5),inset_0_1px_0_rgba(255,255,255,.05)]">
-            <div className="bg-grid-feed animate-gridpan mask-fade absolute inset-0" />
-          </div>
-          <CornerBrackets />
-
-          {/* Scanline sweep */}
-          <div className="pointer-events-none absolute inset-4 overflow-hidden rounded-2xl">
-            <div className="animate-scan absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-transparent via-[rgba(34,211,238,.22)] to-transparent" />
-          </div>
-
-          {/* Canvas */}
-          <div className="absolute inset-0">
-            <HeroScene />
-          </div>
-
-          {/* HUD readouts (light — they sit on the dark feed) */}
-          <div className="pointer-events-none absolute left-6 top-6 flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-live absolute inline-flex h-full w-full rounded-full bg-[#ff4d4d]" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ff4d4d]" />
-            </span>
-            <span className="hud text-[#ff6b6b]">REC · CAM 01</span>
-          </div>
-          <div className="pointer-events-none absolute right-6 top-6 hud text-white/55">
-            <LiveClock />
-          </div>
-          <div className="pointer-events-none absolute bottom-6 left-6 hud text-[#5fe0ea]">
-            ◎ Tracking
-          </div>
-          <div className="pointer-events-none absolute bottom-6 right-6 hud text-white/55">
-            4K · 24/7 · AI DETECT
-          </div>
-        </motion.div>
       </div>
     </section>
-  );
-}
-
-function CornerBrackets() {
-  const base = "absolute h-6 w-6 border-[#22d3ee]/50";
-  return (
-    <>
-      <span className={`${base} left-3 top-3 border-l-2 border-t-2`} />
-      <span className={`${base} right-3 top-3 border-r-2 border-t-2`} />
-      <span className={`${base} bottom-3 left-3 border-b-2 border-l-2`} />
-      <span className={`${base} bottom-3 right-3 border-b-2 border-r-2`} />
-    </>
   );
 }

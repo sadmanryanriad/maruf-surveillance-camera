@@ -8,7 +8,9 @@ export function Services() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Section header */}
         <Reveal className="max-w-2xl">
-          <p className="hud mb-4 text-primary-strong">// What we do</p>
+          <p className="font-sans text-xs font-bold uppercase tracking-wider text-primary mb-3.5">
+            — What we do
+          </p>
           <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             One team, from first survey to the last cable.
           </h2>
