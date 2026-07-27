@@ -27,15 +27,16 @@ export function Testimonials() {
           align="center"
         />
 
-        <div className="relative mt-12 overflow-hidden rounded-[20px] border border-line bg-surface-2 p-8 sm:p-14">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr] sm:gap-10 items-start">
+        {/* Outer Card with strictly fixed height so it never resizes on slide switch */}
+        <div className="relative mt-12 overflow-hidden rounded-[20px] border border-line bg-surface-2 p-6 sm:p-10 md:p-12 h-[420px] sm:h-[330px] md:h-[300px] flex flex-col justify-between">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[auto_1fr] sm:gap-8 items-start h-full">
             {/* Red quote mark */}
-            <div className="font-serif italic text-5xl sm:text-7xl font-bold text-[#c8102e] leading-none select-none">
+            <div className="font-serif italic text-4xl sm:text-6xl font-bold text-[#c8102e] leading-none select-none shrink-0">
               “
             </div>
 
-            {/* Content area with fixed relative min-height to prevent resizing jump */}
-            <div className="flex flex-col justify-between min-h-[220px] sm:min-h-[200px]">
+            {/* Content area with fixed flex column height */}
+            <div className="flex flex-col justify-between h-full overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={i}
@@ -43,22 +44,22 @@ export function Testimonials() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduced ? undefined : { opacity: 0, y: -8 }}
                   transition={{ duration: 0.25 }}
-                  className="flex flex-col justify-between flex-1"
+                  className="flex flex-col justify-between h-full"
                 >
-                  <p className="font-serif italic text-lg sm:text-2xl leading-relaxed text-foreground mb-6">
+                  <p className="font-serif italic text-base sm:text-xl lg:text-2xl leading-relaxed text-foreground overflow-y-auto pr-1">
                     {active.quote}
                   </p>
 
-                  <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line/60 pt-5 mt-auto">
-                    <div className="flex items-center gap-3.5">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-foreground font-sans font-bold text-sm text-background">
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line/60 pt-4 mt-auto shrink-0">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-foreground font-sans font-bold text-xs sm:text-sm text-background shadow-sm">
                         {initials}
                       </div>
                       <div>
-                        <div className="font-bold text-foreground text-sm sm:text-base">
+                        <div className="font-bold text-foreground text-xs sm:text-base leading-tight">
                           {active.name}
                         </div>
-                        <div className="text-xs sm:text-sm text-muted">
+                        <div className="text-[11px] sm:text-xs text-muted mt-0.5">
                           {active.role}
                         </div>
                       </div>
@@ -82,7 +83,7 @@ export function Testimonials() {
                         <button
                           onClick={() => go(i - 1)}
                           aria-label="Previous review"
-                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-white"
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-white shadow-xs"
                         >
                           <svg
                             viewBox="0 0 24 24"
@@ -99,7 +100,7 @@ export function Testimonials() {
                         <button
                           onClick={() => go(i + 1)}
                           aria-label="Next review"
-                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-white"
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-white shadow-xs"
                         >
                           <svg
                             viewBox="0 0 24 24"
