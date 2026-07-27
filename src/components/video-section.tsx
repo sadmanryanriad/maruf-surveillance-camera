@@ -4,10 +4,6 @@ import { useReducedMotion } from "motion/react";
 import { ButtonLink } from "./ui/button";
 import { Reveal } from "./reveal";
 
-// Free stock footage from Mixkit (Mixkit License — royalty-free, no attribution
-// required). For production, self-host or license footage of Maruf's own work.
-const VIDEO_720 = "https://assets.mixkit.co/videos/23028/23028-720.mp4";
-const VIDEO_360 = "https://assets.mixkit.co/videos/23028/23028-360.mp4";
 const POSTER = "https://assets.mixkit.co/videos/23028/23028-thumb-720-0.jpg";
 
 export function VideoSection() {
@@ -18,7 +14,7 @@ export function VideoSection() {
       {/* Background video (decorative) */}
       <div aria-hidden className="absolute inset-0 -z-10">
         {reduced ? (
-          <img src={POSTER} alt="" className="h-full w-full object-cover" />
+          <img src={POSTER} alt="" className="h-full w-full object-cover object-center" />
         ) : (
           <video
             ref={(el) => {
@@ -27,7 +23,7 @@ export function VideoSection() {
                 el.play().catch(() => {});
               }
             }}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-center"
             autoPlay
             muted
             loop
