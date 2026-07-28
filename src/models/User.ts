@@ -43,6 +43,9 @@ const UserSchema: Schema<IUser> = new Schema(
   }
 );
 
+// Explicit secondary indexes
+UserSchema.index({ role: 1 });
+
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 
 export default User;

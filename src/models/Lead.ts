@@ -71,6 +71,12 @@ const LeadSchema: Schema<ILead> = new Schema(
   }
 );
 
+// High-Performance Indexes
+LeadSchema.index({ isArchived: 1, createdAt: -1 });
+LeadSchema.index({ status: 1, isArchived: 1 });
+LeadSchema.index({ type: 1, isArchived: 1 });
+LeadSchema.index({ isBookmarked: 1, isArchived: 1 });
+
 const Lead: Model<ILead> = mongoose.models.Lead || mongoose.model<ILead>("Lead", LeadSchema);
 
 export default Lead;

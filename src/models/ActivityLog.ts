@@ -13,7 +13,7 @@ const ActivityLogSchema: Schema<IActivityLog> = new Schema(
   {
     userEmail: { type: String, required: true },
     userName: { type: String, required: true },
-    userRole: { type: String, enum: ["admin", "viewer"], required: true },
+    userRole: { type: String, enum: ["admin", "viewer"], required: true, index: true },
     action: { type: String, required: true },
     details: { type: String, required: true },
   },
@@ -21,6 +21,10 @@ const ActivityLogSchema: Schema<IActivityLog> = new Schema(
     timestamps: { createdAt: true, updatedAt: false },
   }
 );
+
+// High-Performance Indexes for Audit Logs
+ActivityLogSchema.index({ createdAt: -1 });
+ActivityLogSchema.index({ userRole: 1, createdAt: -1 });
 
 const ActivityLog: Model<IActivityLog> =
   mongoose.models.ActivityLog || mongoose.model<IActivityLog>("ActivityLog", ActivityLogSchema);

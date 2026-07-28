@@ -27,6 +27,8 @@ const SettingSchema: Schema<ISetting> = new Schema(
   }
 );
 
+SettingSchema.index({ updatedAt: -1 });
+
 const Setting: Model<ISetting> = mongoose.models.Setting || mongoose.model<ISetting>("Setting", SettingSchema);
 
 export default Setting;
