@@ -29,7 +29,7 @@ export default function QuotePage() {
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_1.15fr]">
           {/* Reassurance */}
           <Reveal>
-            <p className="hud mb-4 text-primary-strong">// Why request one</p>
+            <p className="hud mb-4 text-primary-strong">{"// Why request one"}</p>
             <h2 className="font-display text-3xl font-bold leading-tight tracking-tight">
               Know your options before you spend a cent.
             </h2>

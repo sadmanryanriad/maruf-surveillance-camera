@@ -1,15 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+function subscribeTheme(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+  return () => observer.disconnect();
+}
+
+function getThemeSnapshot() {
+  return document.documentElement.getAttribute("data-theme") === "dark";
+}
+
+const emptySubscribe = () => () => {};
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [mounted, setMounted] = useState(false);
-  const [dark, setDark] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
-  useEffect(() => {
-    setMounted(true);
-    setDark(document.documentElement.getAttribute("data-theme") === "dark");
-  }, []);
+  const dark = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    () => false
+  );
 
   function toggle() {
     const next = document.documentElement.getAttribute("data-theme") !== "dark";
@@ -17,7 +36,6 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     document.documentElement.setAttribute("data-theme", value);
     // Persist for the server to read on the next load (1 year).
     document.cookie = `theme=${value}; path=/; max-age=31536000; SameSite=Lax`;
-    setDark(next);
   }
 
   return (

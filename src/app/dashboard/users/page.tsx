@@ -77,7 +77,54 @@ export default function UsersAndSettingsPage() {
   }
 
   useEffect(() => {
-    loadData();
+    let ignore = false;
+
+    async function loadInitialData() {
+      try {
+        const [uRes, tRes, sRes] = await Promise.all([
+          fetch("/api/users"),
+          fetch("/api/settings/telegram"),
+          fetch("/api/settings"),
+        ]);
+
+        if (uRes.ok) {
+          const data = await uRes.json();
+          if (!ignore) {
+            setUsers(data.users || []);
+            setCurrentRole(data.currentRole || "viewer");
+          }
+        }
+
+        if (tRes.ok) {
+          const tData = await tRes.json();
+          if (!ignore) {
+            setChatIds(tData.telegramChatIds || []);
+          }
+        }
+
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          if (!ignore && sData.setting) {
+            setContactPhone(sData.setting.phone || "+880 1790-424860");
+            setContactEmail(sData.setting.email || "hello@maruf-security.com");
+            setContactAddress(sData.setting.address || "24 Watchtower Ave, Suite 300, Metro City");
+            setContactHours(sData.setting.hours || "Mon-Sat · 8am-8pm");
+            setWhatsappNumber(sData.setting.whatsappNumber || "8801790424860");
+          }
+        }
+      } catch {
+        console.error("Failed to load users & settings.");
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadInitialData();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   function handleSaveClick(e: React.FormEvent) {

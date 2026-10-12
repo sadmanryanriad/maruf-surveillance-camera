@@ -37,7 +37,7 @@ export function Testimonials() {
 
             {/* Content area with fixed flex column height */}
             <div className="flex flex-col justify-between h-full overflow-hidden">
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={i}
                   initial={reduced ? false : { opacity: 0, y: 8 }}

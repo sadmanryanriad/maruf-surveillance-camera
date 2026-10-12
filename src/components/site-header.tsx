@@ -12,6 +12,12 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -20,23 +26,27 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close the mobile menu on route change.
-  useEffect(() => setOpen(false), [pathname]);
-
   const isActive = (href: string) => {
-    const path = href.split("#")[0] || "/";
-    return path === "/" ? pathname === "/" : pathname.startsWith(path);
+    if (href.includes("#")) {
+      return false;
+    }
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
   };
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-line bg-surface/90 backdrop-blur-md shadow-sm transition-all duration-300`}
+      className={`sticky top-0 z-50 border-b border-line bg-surface/90 backdrop-blur-md transition-all duration-300 ${
+        scrolled ? "shadow-md bg-surface/95" : "shadow-sm"
+      }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
         <Logo />
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-6 lg:flex xl:gap-8" aria-label="Primary">
           {nav.map((item) => (
             <Link
               key={item.href}
@@ -51,7 +61,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <ThemeToggle />
           <ButtonLink href="/quote" variant="outline" size="md">
             Get a quote
@@ -61,9 +71,12 @@ export function SiteHeader() {
           </ButtonLink>
         </div>
 
-        {/* Mobile controls */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Mobile & tablet controls */}
+        <div className="flex items-center gap-2.5 lg:hidden">
           <ThemeToggle />
+          <ButtonLink href="/book" variant="primary" size="sm" className="hidden sm:inline-flex">
+            Book now
+          </ButtonLink>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -82,12 +95,13 @@ export function SiteHeader() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-line bg-background/95 backdrop-blur-md md:hidden">
+        <div className="border-t border-line bg-background/95 backdrop-blur-md lg:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col px-5 py-4" aria-label="Mobile">
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setOpen(false)}
                 className={`border-b border-line py-3 text-base font-medium last:border-0 ${
                   isActive(item.href) ? "text-primary-strong" : "text-foreground"
                 }`}
@@ -96,10 +110,10 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="mt-4 flex gap-3">
-              <ButtonLink href="/quote" variant="outline" size="md" className="flex-1">
+              <ButtonLink href="/quote" variant="outline" size="md" className="flex-1" onClick={() => setOpen(false)}>
                 Get a quote
               </ButtonLink>
-              <ButtonLink href="/book" variant="primary" size="md" className="flex-1">
+              <ButtonLink href="/book" variant="primary" size="md" className="flex-1" onClick={() => setOpen(false)}>
                 Book now
               </ButtonLink>
             </div>

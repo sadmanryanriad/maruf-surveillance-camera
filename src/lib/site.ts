@@ -90,18 +90,6 @@ export const processSteps: Step[] = [
   },
 ];
 
-// Rotating trust strip
-export const marquee: string[] = [
-  "Licensed & insured",
-  "4K ultra-HD",
-  "24/7 monitoring",
-  "Certified installers",
-  "5-year warranty",
-  "Night-vision optics",
-  "Cloud + local backup",
-  "Smart motion alerts",
-];
-
 // Brands we install — shown in the marquee after the hero
 export const brands: string[] = [
   "Hikvision",

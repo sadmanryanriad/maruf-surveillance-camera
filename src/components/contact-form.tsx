@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import countries, { Country } from "@/lib/countries";
 import { Button } from "./ui/button";
@@ -242,9 +243,12 @@ export function ContactForm() {
                       }}
                       className="flex h-full items-center gap-2 rounded-xl border border-line bg-background px-3.5 py-3 text-xs font-bold text-foreground focus:border-primary focus:outline-none cursor-pointer"
                     >
-                      <img
+                      <Image
                         src={`https://flagcdn.com/w40/${selectedCountry.code.toLowerCase()}.png`}
                         alt={selectedCountry.name}
+                        width={20}
+                        height={14}
+                        unoptimized
                         className="w-5 h-3.5 object-cover rounded-[1px] border border-line/40 shrink-0 shadow-sm"
                       />
                       <span>{selectedCountry.dial}</span>
@@ -277,9 +281,12 @@ export function ContactForm() {
                               }`}
                             >
                               <span className="flex items-center gap-2.5">
-                                <img
+                                <Image
                                   src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`}
                                   alt=""
+                                  width={20}
+                                  height={14}
+                                  unoptimized
                                   className="w-5 h-3.5 object-cover rounded-[1px] border border-line/40 shrink-0 shadow-sm"
                                 />
                                 <span className="truncate max-w-[120px]">{c.name}</span>

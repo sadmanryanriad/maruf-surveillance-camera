@@ -18,6 +18,7 @@ export default function ActivityLogsPage() {
   const [roleFilter, setRoleFilter] = useState("all");
 
   async function fetchLogs() {
+    setLoading(true);
     try {
       const res = await fetch("/api/logs");
       if (res.ok) {
@@ -32,7 +33,30 @@ export default function ActivityLogsPage() {
   }
 
   useEffect(() => {
-    fetchLogs();
+    let ignore = false;
+
+    async function loadInitialLogs() {
+      try {
+        const res = await fetch("/api/logs");
+        if (res.ok) {
+          const data = await res.json();
+          if (!ignore) {
+            setLogs(data.logs || []);
+          }
+        }
+      } catch {
+        console.error("Failed to load activity logs.");
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadInitialLogs();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const filteredLogs = logs.filter((log) => {

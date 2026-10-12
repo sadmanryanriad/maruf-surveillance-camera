@@ -28,7 +28,7 @@ export function CtaBand({
           />
           <div className="relative flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
             <div className="max-w-xl">
-              <p className="hud mb-3 text-[#7de8f5]">// Get started</p>
+              <p className="hud mb-3 text-[#7de8f5]">{"// Get started"}</p>
               <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
                 {title}
               </h2>

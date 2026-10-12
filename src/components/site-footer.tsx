@@ -54,7 +54,7 @@ export function SiteFooter() {
         <div>
           <Logo className="h-9 w-auto" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-            {site.tagline} Professional surveillance for homes and businesses across
+            {site.tagline} Expert installation and 24/7 monitoring for homes and businesses across
             the city.
           </p>
           <div className="mt-6 flex gap-2.5">

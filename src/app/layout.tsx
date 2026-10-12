@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Manrope, IBM_Plex_Mono } from "next/font/google";
+import { LayoutShell } from "@/components/layout-shell";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -35,8 +34,6 @@ export const metadata: Metadata = {
     "24/7 monitoring",
   ],
 };
-
-import { LayoutShell } from "@/components/layout-shell";
 
 export default async function RootLayout({
   children,

@@ -29,7 +29,7 @@ export default function BookPage() {
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_1.15fr]">
           {/* What to expect */}
           <Reveal>
-            <p className="hud mb-4 text-primary-strong">// What to expect</p>
+            <p className="hud mb-4 text-primary-strong">{"// What to expect"}</p>
             <h2 className="font-display text-3xl font-bold leading-tight tracking-tight">
               Three steps, then you&apos;re covered.
             </h2>

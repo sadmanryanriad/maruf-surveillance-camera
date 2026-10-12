@@ -36,24 +36,33 @@ export default function ArchivedLeadsPage() {
   const [activeTooltipId, setActiveTooltipId] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  async function fetchLeads() {
-    try {
-      const res = await fetch("/api/leads");
-      if (res.ok) {
-        const data = await res.json();
-        const all: MongoLead[] = data.leads || [];
-        setArchivedLeads(all.filter((l) => l.isArchived));
-        setCurrentRole(data.currentRole || "viewer");
-      }
-    } catch {
-      console.error("Failed to load archived leads.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    fetchLeads();
+    let ignore = false;
+
+    async function loadArchivedLeads() {
+      try {
+        const res = await fetch("/api/leads");
+        if (res.ok) {
+          const data = await res.json();
+          if (!ignore) {
+            const all: MongoLead[] = data.leads || [];
+            setArchivedLeads(all.filter((l) => l.isArchived));
+            setCurrentRole(data.currentRole || "viewer");
+          }
+        }
+      } catch {
+        console.error("Failed to load archived leads.");
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadArchivedLeads();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   async function handleRestoreLead(id: string) {

@@ -16,6 +16,10 @@ export function Hero() {
         <video
           ref={(el) => {
             if (el) {
+              if (reduced) {
+                el.pause();
+                return;
+              }
               el.muted = true;
               el.defaultMuted = true;
               el.setAttribute("muted", "");
@@ -28,6 +32,7 @@ export function Hero() {
               }
             }
           }}
+          poster={POSTER}
           className="h-full w-full object-cover opacity-75 dark:opacity-85 filter brightness-95 contrast-105 scale-105 transition-opacity duration-500"
           autoPlay
           muted

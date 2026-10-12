@@ -46,23 +46,34 @@ export default function LeadsPage() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  async function fetchLeads() {
-    try {
-      const res = await fetch("/api/leads");
-      if (res.ok) {
-        const data = await res.json();
-        setLeads(data.leads || []);
-        setCurrentRole(data.currentRole || "viewer");
-      }
-    } catch {
-      setErrorMsg("Failed to load leads list.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    fetchLeads();
+    let ignore = false;
+
+    async function loadLeads() {
+      try {
+        const res = await fetch("/api/leads");
+        if (res.ok) {
+          const data = await res.json();
+          if (!ignore) {
+            setLeads(data.leads || []);
+            setCurrentRole(data.currentRole || "viewer");
+          }
+        }
+      } catch {
+        if (!ignore) {
+          setErrorMsg("Failed to load leads list.");
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadLeads();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   async function handleStatusChange(id: string, newStatus: LeadStatus) {
