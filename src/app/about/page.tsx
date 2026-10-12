@@ -46,7 +46,7 @@ export default function AboutPage() {
                 design, install, and stand behind it.
               </p>
               <p>
-                Today we protect hundreds of homes and businesses across the city — and
+                Today we protect hundreds of homes and families across Worthing and West Sussex — and
                 we still answer the phone ourselves.
               </p>
             </div>

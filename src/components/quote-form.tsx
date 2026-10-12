@@ -14,7 +14,7 @@ export function QuoteForm() {
         <Field id="q-email" name="email" type="email" label="Email" placeholder="you@email.com" required />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="q-phone" name="phone" label="Phone" placeholder="+1 (555) 000-0000" required />
+        <Field id="q-phone" name="phone" label="Phone" placeholder="07123 456789" required />
         <SelectField id="q-type" name="propertyType" label="Property type" defaultValue="" required>
           <option value="" disabled>Select…</option>
           <option>Home / apartment</option>

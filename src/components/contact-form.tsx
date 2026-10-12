@@ -14,7 +14,7 @@ export function ContactForm() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [countryCode, setCountryCode] = useState("+880");
+  const [countryCode, setCountryCode] = useState("+44");
   const [message, setMessage] = useState("");
   const [companyUrl, setCompanyUrl] = useState(""); // Honeypot field for spam prevention
 

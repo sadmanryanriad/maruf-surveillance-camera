@@ -13,7 +13,7 @@ export function BookForm() {
         <Field id="b-email" name="email" type="email" label="Email" placeholder="you@email.com" required />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="b-phone" name="phone" label="Phone" placeholder="+1 (555) 000-0000" required />
+        <Field id="b-phone" name="phone" label="Phone" placeholder="07123 456789" required />
         <SelectField id="b-service" name="service" label="Appointment type" defaultValue="" required>
           <option value="" disabled>Select…</option>
           <option>Free site survey</option>
