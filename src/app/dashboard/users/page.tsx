@@ -21,7 +21,7 @@ export default function UsersAndSettingsPage() {
   // Site Contact Details & WhatsApp state
   const [contactPhone, setContactPhone] = useState("+880 1790-424860");
   const [contactEmail, setContactEmail] = useState("hello@maruf-security.com");
-  const [contactAddress, setContactAddress] = useState("24 Watchtower Ave, Suite 300, Metro City");
+  const [contactAddress, setContactAddress] = useState("Worthing, West Sussex · Local to you");
   const [contactHours, setContactHours] = useState("Mon-Sat · 8am-8pm");
   const [whatsappNumber, setWhatsappNumber] = useState("8801790424860");
 
@@ -64,7 +64,7 @@ export default function UsersAndSettingsPage() {
         if (sData.setting) {
           setContactPhone(sData.setting.phone || "+880 1790-424860");
           setContactEmail(sData.setting.email || "hello@maruf-security.com");
-          setContactAddress(sData.setting.address || "24 Watchtower Ave, Suite 300, Metro City");
+          setContactAddress(sData.setting.address || "Worthing, West Sussex · Local to you");
           setContactHours(sData.setting.hours || "Mon-Sat · 8am-8pm");
           setWhatsappNumber(sData.setting.whatsappNumber || "8801790424860");
         }
@@ -107,7 +107,7 @@ export default function UsersAndSettingsPage() {
           if (!ignore && sData.setting) {
             setContactPhone(sData.setting.phone || "+880 1790-424860");
             setContactEmail(sData.setting.email || "hello@maruf-security.com");
-            setContactAddress(sData.setting.address || "24 Watchtower Ave, Suite 300, Metro City");
+            setContactAddress(sData.setting.address || "Worthing, West Sussex · Local to you");
             setContactHours(sData.setting.hours || "Mon-Sat · 8am-8pm");
             setWhatsappNumber(sData.setting.whatsappNumber || "8801790424860");
           }

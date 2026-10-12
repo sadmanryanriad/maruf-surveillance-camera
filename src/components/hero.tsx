@@ -1,56 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 
-const POSTER = "https://assets.mixkit.co/videos/23028/23028-thumb-720-0.jpg";
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function Hero() {
-  const reduced = useReducedMotion();
-
   return (
     <section className="relative isolate min-h-[85vh] flex items-center overflow-hidden bg-slate-950 pt-20 pb-20 sm:pt-28 sm:pb-28 text-white" aria-label="Introduction">
-      {/* Full-width Background Video */}
+      {/* Background Hero Image */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <video
-          ref={(el) => {
-            if (el) {
-              if (reduced) {
-                el.pause();
-                return;
-              }
-              el.muted = true;
-              el.defaultMuted = true;
-              el.setAttribute("muted", "");
-              el.setAttribute("playsinline", "");
-              const p = el.play();
-              if (p !== undefined) {
-                p.catch(() => {
-                  document.addEventListener("click", () => el.play(), { once: true });
-                });
-              }
-            }
-          }}
-          poster={POSTER}
-          className="h-full w-full object-cover opacity-75 dark:opacity-85 filter brightness-95 contrast-105 scale-105 transition-opacity duration-500"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        >
-          <source src="/videos/hero-surveillance.mp4" type="video/mp4" />
-        </video>
+        <Image
+          src="/images/reolink-omvi-3i-garden.webp"
+          alt="Reolink WiFi smart security camera protecting family garden with boy and dog"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_35%] filter brightness-[0.88] contrast-[1.05] scale-[1.02] transition-transform duration-700"
+        />
 
-        {/* High-legibility Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/60 to-slate-950/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40" />
-        <div className="bg-grid-feed animate-gridpan absolute inset-0 opacity-25 pointer-events-none" />
+        {/* Clean, high-contrast, welcoming overlay working in both light & dark themes */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/65 to-slate-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/50" />
+        <div className="bg-grid-feed animate-gridpan absolute inset-0 opacity-15 pointer-events-none" />
 
-        {/* Scanline Sweep */}
+        {/* Subtle Warm Ambience / Scanline Accent */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="animate-scan absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-transparent via-[rgba(34,211,238,.18)] to-transparent" />
+          <div className="animate-scan absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-transparent via-[rgba(34,211,238,.12)] to-transparent" />
         </div>
       </div>
 
@@ -64,39 +41,53 @@ export function Hero() {
           }}
           className="max-w-2xl"
         >
-          {/* Live Feed Badge */}
+          {/* Location Badge / Tag */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.6, ease }}
-            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#22d3ee]/30 bg-[#22d3ee]/10 px-4 py-1.5 backdrop-blur-md"
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-slate-900/80 px-4 py-1.5 shadow-sm backdrop-blur-md"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-live absolute inline-flex h-full w-full rounded-full bg-[#ff4d4d]" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ff4d4d]" />
-            </span>
+            <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
             <span className="font-mono text-xs font-bold uppercase tracking-wider text-[#7de8f5]">
-              LIVE FEED · SEE IT IN ACTION
+              LOCAL TO YOU · WEST SUSSEX & WORTHING
             </span>
+          </motion.div>
+
+          {/* Live Feed Pill */}
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.6, ease }}
+            className="mb-6 flex items-center gap-2"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 px-3.5 py-1 backdrop-blur-md">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-live absolute inline-flex h-full w-full rounded-full bg-[#ff4d4d]" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ff4d4d]" />
+              </span>
+              <span className="font-mono text-[11px] font-semibold tracking-wider text-white/90 uppercase">
+                Family Home Protection · Active
+              </span>
+            </div>
           </motion.div>
 
           {/* Main Headline */}
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="font-display text-4xl font-extrabold leading-[1.04] tracking-tight text-white sm:text-6xl lg:text-[4.2rem]"
+            className="font-display text-4xl font-extrabold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-[4rem]"
           >
-            Your property, watched
-            <br />
-            in <span className="text-[#22d3ee]">real time</span>.
+            Security you control{" "}
+            <br className="hidden sm:inline" />
+            <span className="text-[#22d3ee]">and we support</span>.
           </motion.h1>
 
           {/* Subtitle */}
           <motion.p
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 font-sans"
+            className="mt-6 max-w-xl text-lg leading-relaxed text-white/85 font-sans"
           >
-            Crisp day-and-night footage, streamed to your phone and backed up the moment it&apos;s captured. This is what peace of mind looks like.
+            Smart, crystal-clear surveillance tailored for your family, pets, garden, and driveway. Streamed straight to your phone with zero monthly fees and friendly local support.
           </motion.p>
 
           {/* Action CTAs */}
@@ -116,7 +107,7 @@ export function Hero() {
               href="/book"
               className="rounded-full border border-white/25 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:border-white/60 hover:bg-white/20"
             >
-              Book a survey
+              Book home survey
             </Link>
           </motion.div>
 
@@ -127,12 +118,12 @@ export function Hero() {
             className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-7"
           >
             {[
-              { k: "500+", v: "Systems installed" },
-              { k: "24/7", v: "Active monitoring" },
-              { k: "4K", v: "Ultra-HD clarity" },
+              { k: "500+", v: "Homes protected" },
+              { k: "Local", v: "Worthing & Sussex" },
+              { k: "4K & WiFi", v: "Smart pet & yard view" },
             ].map((s) => (
               <div key={s.v}>
-                <dt className="font-display text-3xl font-extrabold tracking-tight text-white">
+                <dt className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                   {s.k}
                 </dt>
                 <dd className="mt-1 text-xs leading-snug text-white/70 font-sans">{s.v}</dd>

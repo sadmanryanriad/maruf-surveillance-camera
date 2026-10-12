@@ -27,4 +27,13 @@ Primary conversion goal: **Get a Quote** & **Book Now**.
 - **Components:** `src/components/` (shared sections, primitives in `ui/`, forms in `forms/`).
 - **Static Data:** Centralized in `src/lib/site.ts`.
 - **Forms:** Client-side validated mock shells (`FormShell`, `ContactForm`) displaying simulated submission state.
-- **Verification:** Always verify changes with `pnpm build` before completing tasks.
+## Verification
+- Always verify changes with `pnpm build` before completing tasks.
+
+## Senior Engineer Mindset & Guidelines
+**Act as a senior engineer, not a blind executor:**
+- **Challenge mistakes**: Never follow instructions blindly. If a request is flawed, suboptimal, or risky, question it plainly, explain tradeoffs, and propose better alternatives before writing code.
+- **Proactively optimize**: Continuously identify performance, architecture, SEO, and UX opportunities and propose them to the owner.
+- **Permission for sensitive ops**: Never execute destructive actions, schema/database migrations, financial edits, or infrastructure modifications without explicit permission.
+- **Smart verification & living docs**: Before committing, reason if internal docs need updating and keep them in sync. **Calibrate checks by impact**: run full tests/builds/lint only for code/logic changes; for doc-only (`.md`) changes, skip tests, builds, and CI log babysitting entirely; for minor copy/UI tweaks, run fast local checks without redundant full build steps.
+

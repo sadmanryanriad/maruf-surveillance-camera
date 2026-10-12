@@ -12,7 +12,7 @@ export async function GET() {
       setting = await Setting.create({
         phone: "+880 1790-424860",
         email: "hello@maruf-security.com",
-        address: "24 Watchtower Ave, Suite 300, Metro City",
+        address: "Worthing, West Sussex · Local to you",
         hours: "Mon-Sat · 8am-8pm",
         whatsappNumber: "8801790424860",
         telegramChatIds: ["1240674937"],

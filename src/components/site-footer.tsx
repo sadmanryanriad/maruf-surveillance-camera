@@ -12,7 +12,7 @@ const columns: { title: string; links: { label: string; href: string }[] }[] = [
     links: [
       { label: "About us", href: "/about" },
       { label: "Services", href: "/#services" },
-      { label: "Payments", href: "/payments" },
+      { label: "Deals", href: "/deals" },
     ],
   },
   {
@@ -54,8 +54,7 @@ export function SiteFooter() {
         <div>
           <Logo className="h-9 w-auto" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-            {site.tagline} Expert installation and 24/7 monitoring for homes and businesses across
-            the city.
+            {site.tagline} Trusted family home CCTV and smart security systems across Worthing & West Sussex.
           </p>
           <div className="mt-6 flex gap-2.5">
             {socials.map((s) => (

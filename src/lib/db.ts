@@ -70,7 +70,7 @@ async function seedDefaultAdmin() {
       await Setting.create({
         phone: "+880 1790-424860",
         email: "hello@maruf-security.com",
-        address: "24 Watchtower Ave, Suite 300, Metro City",
+        address: "Worthing, West Sussex · Local to you",
         hours: "Mon-Sat · 8am-8pm",
         whatsappNumber: "8801790424860",
         telegramChatIds: ["1240674937"],
@@ -80,7 +80,7 @@ async function seedDefaultAdmin() {
       let updated = false;
       if (!setting.phone || setting.phone.includes("01760-345435")) { setting.phone = "+880 1790-424860"; updated = true; }
       if (!setting.email) { setting.email = "hello@maruf-security.com"; updated = true; }
-      if (!setting.address) { setting.address = "24 Watchtower Ave, Suite 300, Metro City"; updated = true; }
+      if (!setting.address || setting.address.includes("Watchtower")) { setting.address = "Worthing, West Sussex · Local to you"; updated = true; }
       if (!setting.hours) { setting.hours = "Mon-Sat · 8am-8pm"; updated = true; }
       if (!setting.whatsappNumber) { setting.whatsappNumber = "8801790424860"; updated = true; }
       if (updated) await setting.save();

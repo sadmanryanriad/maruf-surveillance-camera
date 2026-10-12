@@ -47,11 +47,10 @@ export async function ContactSection() {
           <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             Let&apos;s talk about
             <br />
-            your coverage.
+            your home coverage.
           </h2>
           <p className="mt-5 max-w-md text-lg leading-relaxed text-muted">
-            Questions, a new install, or upgrading an old system — send a note and a
-            real person gets back to you.
+            Protecting homes, families, and pets across Worthing and West Sussex. Send us a message and your local technician will get right back to you.
           </p>
 
           <dl className="mt-10 grid gap-5 sm:grid-cols-2">

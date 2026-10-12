@@ -20,18 +20,20 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Maruf — Surveillance Camera Installation",
+    default: "Maruf — Family Home Security & CCTV Installation | Worthing & West Sussex",
     template: "%s — Maruf",
   },
   description:
-    "Maruf designs and installs professional surveillance and CCTV systems for homes and businesses — with 24/7 monitoring, expert installation, and ongoing support.",
+    "Security you control and we support. Professional family home CCTV & WiFi smart surveillance installations across Worthing and West Sussex. High-definition optics, zero monthly fees, and friendly local service.",
   keywords: [
-    "CCTV installation",
-    "surveillance cameras",
-    "security cameras",
-    "home security",
-    "business security",
-    "24/7 monitoring",
+    "CCTV installation Worthing",
+    "West Sussex security cameras",
+    "home CCTV installation",
+    "Reolink smart cameras",
+    "garden pet security cameras",
+    "residential CCTV Sussex",
+    "smart video doorbell",
+    "local CCTV installer",
   ],
 };
 

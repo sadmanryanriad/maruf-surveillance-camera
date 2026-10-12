@@ -43,7 +43,13 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <Logo />
+        <div className="flex items-center gap-3">
+          <Logo />
+          <span className="hidden xl:inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-2/60 px-2.5 py-1 text-[11px] font-medium text-muted">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Worthing & West Sussex
+          </span>
+        </div>
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-6 lg:flex xl:gap-8" aria-label="Primary">

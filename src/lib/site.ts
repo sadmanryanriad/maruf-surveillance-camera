@@ -3,7 +3,7 @@ export const site = {
   tagline: "Surveillance, done properly.",
   phone: "+880 1790-424860",
   email: "hello@maruf-security.com",
-  address: "24 Watchtower Ave, Suite 300, Metro City",
+  address: "Worthing, West Sussex · Local to you",
   hours: "Mon–Sat · 8am–8pm",
   whatsappNumber: "8801790424860",
 };
@@ -14,7 +14,7 @@ export const nav: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Services", href: "/#services" },
-  { label: "Payments", href: "/payments" },
+  { label: "Deals", href: "/deals" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -30,34 +30,34 @@ export const services: Service[] = [
   {
     id: "installation",
     code: "CAM-01",
-    title: "CCTV & Camera Installation",
+    title: "Home CCTV & Camera Installation",
     description:
-      "Site survey, coverage planning, and clean, concealed installs — from a single doorway camera to a full multi-zone system.",
-    points: ["4K & low-light optics", "Discreet cabling", "Coverage mapping"],
+      "Full survey, blind-spot mapping, and neat wiring — protecting your doors, driveway, and garden.",
+    points: ["4K & colour night vision", "Discreet hidden cabling", "Family & pet zones"],
   },
   {
     id: "monitoring",
     code: "MON-02",
-    title: "24/7 Monitoring",
+    title: "Mobile Access & Smart Alerts",
     description:
-      "Live and recorded footage in your pocket. Smart motion alerts flag what matters and ignore what doesn't.",
-    points: ["Mobile & desktop apps", "Smart motion alerts", "Cloud + local storage"],
+      "Crystal-clear footage on your phone. Instant alerts when family arrives or activity is spotted.",
+    points: ["Phone & tablet live view", "Pet & human detection", "Zero monthly subscriptions"],
   },
   {
     id: "maintenance",
     code: "SVC-03",
-    title: "Maintenance & Support",
+    title: "Local Support & Warranty",
     description:
-      "Systems stay sharp with scheduled health checks, firmware updates, and fast callouts when you need a hand.",
-    points: ["Scheduled health checks", "Firmware updates", "Priority callouts"],
+      "Reliable Worthing & West Sussex technicians on call for health checks, tune-ups, and advice.",
+    points: ["Prompt local callouts", "3-year system warranty", "Friendly local advice"],
   },
   {
     id: "smart",
     code: "NET-04",
-    title: "Smart Integration",
+    title: "Smart Home & Doorbell Integration",
     description:
-      "Tie cameras into access control, lighting, and alarms so your whole property responds as one system.",
-    points: ["Access control", "Alarm & lighting", "Automation rules"],
+      "Connect your video doorbell, yard cameras, and lighting into one simple tap on your phone.",
+    points: ["Video doorbell link", "Garden floodlights & chimes", "One simple home app"],
   },
 ];
 
@@ -188,48 +188,21 @@ export type Plan = {
 
 export const plans: Plan[] = [
   {
-    id: "home",
-    name: "Home",
-    price: "$690",
-    cadence: "from · one-off install",
-    blurb: "Essential coverage for a house or apartment.",
+    id: "customised",
+    name: "Customised to you",
+    price: "Custom",
+    cadence: "tailored package · one-off install",
+    blurb: "Tailored smart protection designed specifically for your home, family, pets, and grounds.",
     features: [
-      "Up to 4 cameras",
-      "1080p / 4K options",
-      "Mobile app access",
-      "7-day cloud clips",
-      "1-year warranty",
-    ],
-  },
-  {
-    id: "business",
-    name: "Business",
-    price: "$1,850",
-    cadence: "from · one-off install",
-    blurb: "Multi-zone coverage for shops, offices, and sites.",
-    features: [
-      "Up to 12 cameras",
-      "4K low-light optics",
-      "Smart motion zones",
-      "30-day cloud + local NVR",
-      "Priority support",
-      "3-year warranty",
+      "Up to 12 cameras with optimal coverage",
+      "4K ultra-clarity & colour night vision",
+      "Smart motion & pet/family zones",
+      "Local secure storage + mobile access (zero monthly fees)",
+      "Neat, concealed cabling & weatherproof mounts",
+      "Priority local Worthing & West Sussex support",
+      "3-year comprehensive warranty",
     ],
     featured: true,
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    price: "Custom",
-    cadence: "tailored quote",
-    blurb: "Campuses, chains, and integrated security stacks.",
-    features: [
-      "Unlimited cameras",
-      "Access control + alarms",
-      "24/7 monitored response",
-      "Dedicated account team",
-      "SLA & 5-year warranty",
-    ],
   },
 ];
 

@@ -5,9 +5,9 @@ import { coverageCams } from "@/lib/site";
 import { Reveal } from "./reveal";
 
 const bullets = [
-  "Overlapping fields eliminate blind spots at entries",
-  "Optimized placement means fewer cameras, lower cost",
-  "Documented coverage plan handed to you at closeout",
+  "Overlapping coverage for doorways, driveway, and rear gardens",
+  "Smart detection tuned to notify you for people and vehicles, not neighbourhood pets",
+  "Tailored home coverage plan and walkthrough provided upon installation",
 ];
 
 export function Coverage() {
@@ -19,15 +19,14 @@ export function Coverage() {
         {/* Copy */}
         <Reveal>
           <p className="font-sans text-xs font-bold uppercase tracking-wider text-primary mb-3.5">
-            — Coverage design
+            — Residential coverage design
           </p>
           <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
-            Every angle mapped before we mount a thing.
+            Every doorway, driveway, and garden angle mapped.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted">
-            We model your property and simulate each camera&apos;s field of view — so you
-            get total coverage with zero blind spots and no wasted hardware.{" "}
-            <span className="text-foreground">Hover a camera to see its cone.</span>
+            We map your home and calibrate each camera&apos;s angle to safeguard what matters most — family, pets, and vehicles — with zero blind spots.{" "}
+            <span className="text-foreground">Hover a camera to see its coverage cone.</span>
           </p>
           <ul className="mt-7 space-y-3.5">
             {bullets.map((b) => (
@@ -57,11 +56,11 @@ export function Coverage() {
                 <path d="M210 160 H320 M320 160 V320" />
                 <path d="M320 210 H440" />
               </g>
-              <g fill="#4d5f70" fontSize="12" fontFamily="var(--font-display), sans-serif">
-                <text x="120" y="110">LOBBY</text>
-                <text x="255" y="110">OFFICE</text>
-                <text x="120" y="250">FLOOR</text>
-                <text x="370" y="270">DOCK</text>
+              <g fill="#4d5f70" fontSize="11" fontWeight="600" fontFamily="var(--font-display), sans-serif">
+                <text x="100" y="105">DRIVEWAY</text>
+                <text x="240" y="105">FRONT DOOR</text>
+                <text x="95" y="245">BACK GARDEN</text>
+                <text x="345" y="268">LIVING ROOM</text>
               </g>
 
               {coverageCams.map((c, idx) => {
