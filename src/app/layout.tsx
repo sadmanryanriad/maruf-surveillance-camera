@@ -43,7 +43,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const themeCookie = (await cookies()).get("theme")?.value;
-  const theme = themeCookie === "dark" ? "dark" : "light";
+  const theme = themeCookie === "light" ? "light" : "dark";
 
   return (
     <html

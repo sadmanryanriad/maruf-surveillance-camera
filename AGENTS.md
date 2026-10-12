@@ -18,7 +18,7 @@ Primary conversion goal: **Get a Quote** & **Book Now**.
 
 ## Design System & Theming
 - **Token-Driven:** Semantic CSS variables in `src/app/globals.css`. Never hardcode hex codes in components—use token utilities (`bg-background`, `text-foreground`, `text-muted`, `border-line`, `text-primary`, etc.).
-- **Theme Switching:** Driven by `data-theme="dark"` attribute on `<html>` (resolved server-side via `theme` cookie in `layout.tsx`). Default is light. Never use `@media (prefers-color-scheme: dark)` overrides.
+- **Theme Switching:** Driven by `data-theme="dark"` attribute on `<html>` (resolved server-side via `theme` cookie in `layout.tsx`). Default is dark. Never use `@media (prefers-color-scheme: dark)` overrides.
 - **Intentionally Dark Panels:** Certain elements maintain a dark live-feed HUD aesthetic across both themes: hero live feed banner, floor-plan coverage map, and CTA band.
 - **Tokens:** `--background`, `--surface`, `--foreground`, `--muted`, `--primary` (cyan), `--on-primary`, `--rating` (gold), `--line`, `--live` (recording red).
 

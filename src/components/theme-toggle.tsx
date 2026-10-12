@@ -12,7 +12,8 @@ function subscribeTheme(callback: () => void) {
 }
 
 function getThemeSnapshot() {
-  return document.documentElement.getAttribute("data-theme") === "dark";
+  const attr = document.documentElement.getAttribute("data-theme");
+  return attr ? attr === "dark" : true;
 }
 
 const emptySubscribe = () => () => {};
@@ -30,7 +31,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   const dark = useSyncExternalStore(
     subscribeTheme,
     getThemeSnapshot,
-    () => false
+    () => true
   );
 
   function toggle(e: React.MouseEvent<HTMLButtonElement>) {
