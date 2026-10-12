@@ -17,7 +17,7 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_35%] filter brightness-[0.88] contrast-[1.05] scale-[1.02] transition-transform duration-700"
+          className="object-cover object-[center_32%] filter brightness-[0.90] contrast-[1.05] scale-[1.12] translate-x-[3%] sm:translate-x-[6%] lg:translate-x-[9%] transition-transform duration-700"
         />
 
         {/* Clean, high-contrast, welcoming overlay working in both light & dark themes */}

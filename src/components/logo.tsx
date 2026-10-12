@@ -2,13 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/site";
 
-export function ApertureMark({ className = "h-[38px] sm:h-8 w-auto" }: { className?: string }) {
+export function ApertureMark({ className = "h-11 sm:h-12 md:h-14 w-auto" }: { className?: string }) {
   return (
     <Logo className={className} />
   );
 }
 
-export function Logo({ className = "h-[38px] sm:h-8 w-auto" }: { className?: string }) {
+export function Logo({ className = "h-11 sm:h-12 md:h-14 w-auto" }: { className?: string }) {
   return (
     <Link
       href="/"

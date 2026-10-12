@@ -52,7 +52,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         {/* Brand */}
         <div>
-          <Logo className="h-9 w-auto" />
+          <Logo className="h-[58px] sm:h-[68px] md:h-[78px] w-auto" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
             {site.tagline} Trusted family home CCTV and smart security systems across Worthing & West Sussex.
           </p>
