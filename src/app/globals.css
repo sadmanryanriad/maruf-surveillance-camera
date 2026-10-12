@@ -184,3 +184,28 @@ body {
     animation: none !important;
   }
 }
+
+/* ──────────────── Animated circular wave theme transition ────────────────
+   Scoped to html.theme-wave (set by ThemeToggle for the length of one
+   transition) so the UA default cross-fade does not run under the clip-path
+   wave that the Web Animations API drives from the toggle button. Under
+   html.theme-fade (reduced motion) the UA cross-fade is kept, shortened. */
+html.theme-wave::view-transition-old(root),
+html.theme-wave::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.theme-wave::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.theme-wave::view-transition-new(root) {
+  z-index: 9999;
+}
+
+html.theme-fade::view-transition-old(root),
+html.theme-fade::view-transition-new(root) {
+  animation-duration: 150ms;
+}
+

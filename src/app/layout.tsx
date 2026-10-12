@@ -42,13 +42,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const theme = (await cookies()).get("theme")?.value === "light" ? "light" : "dark";
+  const themeCookie = (await cookies()).get("theme")?.value;
+  const theme = themeCookie === "dark" ? "dark" : "light";
 
   return (
     <html
       lang="en"
       data-theme={theme}
-      className={`${manrope.variable} ${plexMono.variable} h-full`}
+      className={`${manrope.variable} ${plexMono.variable} ${theme === "dark" ? "dark" : ""} h-full`}
     >
       <body className="min-h-full flex flex-col">
         <LayoutShell>{children}</LayoutShell>

@@ -50,7 +50,7 @@ export default function DealsPage() {
       <section className="py-16 sm:py-24">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-primary/50 bg-surface p-8 sm:p-12 shadow-[0_24px_70px_-25px_var(--primary-glow)]">
+            <div className="relative overflow-hidden rounded-3xl border border-primary/50 bg-surface p-6 sm:p-10 md:p-12 shadow-[0_24px_70px_-25px_var(--primary-glow)]">
               <div className="absolute top-0 right-0 -mr-16 -mt-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
 
               <div className="flex flex-wrap items-center justify-between gap-4">

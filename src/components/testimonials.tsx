@@ -27,11 +27,11 @@ export function Testimonials() {
           align="center"
         />
 
-        {/* Outer Card with strictly fixed height so it never resizes on slide switch */}
-        <div className="relative mt-12 overflow-hidden rounded-[20px] border border-line bg-surface-2 p-6 sm:p-10 md:p-12 h-[420px] sm:h-[330px] md:h-[300px] flex flex-col justify-between">
+        {/* Outer Card with flexible min-height so it never clips on mobile or resizes awkwardly */}
+        <div className="relative mt-12 overflow-hidden rounded-[20px] border border-line bg-surface-2 p-6 sm:p-10 md:p-12 min-h-[430px] sm:min-h-0 sm:h-[340px] md:h-[310px] flex flex-col justify-between">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-[auto_1fr] sm:gap-8 items-start h-full">
             {/* Red quote mark */}
-            <div className="font-serif italic text-4xl sm:text-6xl font-bold text-[#c8102e] leading-none select-none shrink-0">
+            <div className="font-serif italic text-4xl sm:text-6xl font-bold text-accent-red leading-none select-none shrink-0">
               “
             </div>
 

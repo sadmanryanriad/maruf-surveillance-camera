@@ -50,13 +50,13 @@ export function Coverage() {
               <rect x="0" y="0" width="480" height="360" fill="url(#fp)" />
 
               {/* walls */}
-              <g stroke="#2b3d4e" strokeWidth="3" fill="none" strokeLinejoin="round">
+              <g stroke="#384f66" strokeWidth="3" fill="none" strokeLinejoin="round">
                 <rect x="40" y="40" width="400" height="280" rx="4" />
                 <path d="M40 160 H210 V40" />
                 <path d="M210 160 H320 M320 160 V320" />
                 <path d="M320 210 H440" />
               </g>
-              <g fill="#4d5f70" fontSize="11" fontWeight="600" fontFamily="var(--font-display), sans-serif">
+              <g fill="#94a3b8" fontSize="11" fontWeight="600" fontFamily="var(--font-display), sans-serif">
                 <text x="100" y="105">DRIVEWAY</text>
                 <text x="240" y="105">FRONT DOOR</text>
                 <text x="95" y="245">BACK GARDEN</text>

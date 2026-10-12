@@ -103,13 +103,17 @@ export function SiteHeader() {
       {open && (
         <div className="border-t border-line bg-background/95 backdrop-blur-md lg:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col px-5 py-4" aria-label="Mobile">
+            <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted w-max">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              Worthing & West Sussex · Local to you
+            </div>
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={`border-b border-line py-3 text-base font-medium last:border-0 ${
-                  isActive(item.href) ? "text-primary-strong" : "text-foreground"
+                  isActive(item.href) ? "text-primary font-bold" : "text-foreground"
                 }`}
               >
                 {item.label}
