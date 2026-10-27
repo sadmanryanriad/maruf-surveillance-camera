@@ -10,16 +10,14 @@ const columns: { title: string; links: { label: string; href: string }[] }[] = [
   {
     title: "Company",
     links: [
-      { label: "About us", href: "/about" },
+      { label: "About us", href: "/#about" },
       { label: "Services", href: "/#services" },
-      { label: "Deals", href: "/deals" },
     ],
   },
   {
     title: "Get started",
     links: [
-      { label: "Get a quote", href: "/quote" },
-      { label: "Book now", href: "/book" },
+      { label: "Get a survey now", href: "/book" },
       { label: "Contact us", href: "/#contact" },
     ],
   },
@@ -115,7 +113,7 @@ export function SiteFooter() {
           <p className="hud text-muted">
             © {new Date().getFullYear()} {site.name} · Surveillance systems
           </p>
-          <p className="hud text-muted/70">Licensed · Insured · Certified installers</p>
+          <p className="hud text-muted/70">Licensed · Insured · Professional installers</p>
         </div>
       </div>
     </footer>

@@ -11,10 +11,9 @@ export const site = {
 export type NavItem = { label: string; href: string };
 
 export const nav: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "Home", href: "/#home" },
+  { label: "About", href: "/#about" },
   { label: "Services", href: "/#services" },
-  { label: "Deals", href: "/deals" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -33,7 +32,7 @@ export const services: Service[] = [
     title: "Home CCTV & Camera Installation",
     description:
       "Full survey, blind-spot mapping, and neat wiring — protecting your doors, driveway, and garden.",
-    points: ["4K & colour night vision", "Discreet hidden cabling", "Family & pet zones"],
+    points: ["Colour night vision optics", "Discreet hidden cabling", "Family & pet zones"],
   },
   {
     id: "monitoring",
@@ -41,7 +40,7 @@ export const services: Service[] = [
     title: "Mobile Access & Smart Alerts",
     description:
       "Crystal-clear footage on your phone. Instant alerts when family arrives or activity is spotted.",
-    points: ["Phone & tablet live view", "Pet & human detection", "Zero monthly subscriptions"],
+    points: ["Phone & tablet live view", "Pet & human detection", "No hidden fees"],
   },
   {
     id: "maintenance",
@@ -50,14 +49,6 @@ export const services: Service[] = [
     description:
       "Reliable Worthing & West Sussex technicians on call for health checks, tune-ups, and advice.",
     points: ["Prompt local callouts", "3-year system warranty", "Friendly local advice"],
-  },
-  {
-    id: "smart",
-    code: "NET-04",
-    title: "Smart Home & Doorbell Integration",
-    description:
-      "Connect your video doorbell, yard cameras, and lighting into one simple tap on your phone.",
-    points: ["Video doorbell link", "Garden floodlights & chimes", "One simple home app"],
   },
 ];
 
@@ -80,7 +71,7 @@ export const processSteps: Step[] = [
     n: "03",
     title: "Clean install",
     description:
-      "Certified installers fit and configure everything, with cabling kept out of sight.",
+      "Professional installers fit and configure everything, with cabling kept out of sight.",
   },
   {
     n: "04",
@@ -107,27 +98,27 @@ export type Testimonial = { quote: string; name: string; role: string };
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "Maruf mapped our whole warehouse and found blind spots our old installer completely missed. Footage is crystal clear and the app is genuinely easy for my floor managers.",
-    name: "Marcus Reyes",
-    role: "Operations Director, Bayline Logistics",
+      "With two kids and a dog playing in the garden, having clear night vision across the driveway and lawn gives us complete peace of mind. Excellent installation.",
+    name: "Mark & Sarah Jenkins",
+    role: "Worthing Homeowners",
   },
   {
     quote:
       "They treated our home like it mattered. Cabling is invisible, the doorbell cam is razor sharp at night, and setup on our phones took five minutes.",
     name: "Priya Anand",
-    role: "Homeowner",
+    role: "West Sussex Homeowner",
   },
   {
     quote:
-      "From quote to install was 48 hours. Clean work, no upsell, and the coverage plan they handed us was more thorough than anything the big-box guys offered.",
+      "From survey to install was 48 hours. Clean work, friendly advice, and we can check on our pets and front door right from our phones anywhere.",
     name: "Danielle Wu",
-    role: "Store Manager, Meridian Retail",
+    role: "Goring-by-Sea Resident",
   },
   {
     quote:
-      "The 24/7 monitoring caught an after-hours break-in attempt and dispatched before I even woke up. Worth every dollar.",
+      "Having local installers in Worthing who actually pick up the phone makes all the difference. Superb night vision and no hidden fees.",
     name: "James Okafor",
-    role: "Owner, Okafor Auto Group",
+    role: "Worthing Resident",
   },
 ];
 
@@ -150,8 +141,6 @@ export const coverageCams: CoverageCam[] = [
 export type Stat = { value: number; suffix?: string; label: string };
 
 export const stats: Stat[] = [
-  { value: 500, suffix: "+", label: "Systems installed" },
-  { value: 12, suffix: "yrs", label: "Protecting the city" },
   { value: 4, suffix: "K", label: "Ultra-HD clarity" },
   { value: 98, suffix: "%", label: "Would recommend" },
 ];
@@ -195,9 +184,9 @@ export const plans: Plan[] = [
     blurb: "Tailored smart protection designed specifically for your home, family, pets, and grounds.",
     features: [
       "Up to 12 cameras with optimal coverage",
-      "4K ultra-clarity & colour night vision",
+      "Colour night vision optics",
       "Smart motion & pet/family zones",
-      "Local secure storage + mobile access (zero monthly fees)",
+      "Local secure storage + mobile access (no hidden fees)",
       "Neat, concealed cabling & weatherproof mounts",
       "Priority local Worthing & West Sussex support",
       "3-year comprehensive warranty",
@@ -238,14 +227,14 @@ export const faqs: Faq[] = [
   },
   {
     q: "Do you offer monthly payment plans?",
-    a: "We offer interest-free financing over 6 or 12 months on Business and Enterprise systems. Ask for details in your quote.",
+    a: "We offer interest-free financing over 6 or 12 months. Ask for details in your survey.",
   },
   {
     q: "What happens to my footage?",
-    a: "Footage is encrypted and stored to your plan — cloud, a local recorder, or both. You own your data and can export it anytime.",
+    a: "Footage is encrypted and stored to your own local secure recorder and phone. You own your data with no monthly cloud subscription required.",
   },
   {
     q: "Can you upgrade an existing system?",
-    a: "Often, yes. We can assess your current cameras and cabling and tell you honestly what's worth keeping.",
+    a: "Often, yes. We can assess your current cameras and cabling during our survey and tell you honestly what's worth keeping.",
   },
 ];

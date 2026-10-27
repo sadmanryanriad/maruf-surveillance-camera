@@ -9,7 +9,7 @@ export function Marquee() {
   return (
     <section className="relative border-y border-line bg-surface/40 py-8">
       <p className="mb-6 text-center text-xs font-semibold uppercase tracking-wider text-muted">
-        Certified installers of the brands you trust
+        Professional installers of the brands you trust
       </p>
       <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
         <div className="flex w-max hover:[&>div]:![animation-play-state:paused]">

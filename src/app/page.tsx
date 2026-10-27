@@ -1,8 +1,8 @@
 import { Hero } from "@/components/hero";
 import { Marquee } from "@/components/marquee";
+import { AboutSection } from "@/components/about-section";
 import { Services } from "@/components/services";
 import { Coverage } from "@/components/coverage";
-import { StatsBand } from "@/components/stats-band";
 import { Process } from "@/components/process";
 import { Testimonials } from "@/components/testimonials";
 import { FaqSection } from "@/components/faq-section";
@@ -13,9 +13,9 @@ export default function Home() {
     <>
       <Hero />
       <Marquee />
+      <AboutSection />
       <Services />
       <Coverage />
-      <StatsBand />
       <Process />
       <Testimonials />
       <FaqSection />

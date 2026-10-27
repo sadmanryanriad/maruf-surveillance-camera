@@ -4,25 +4,25 @@ import { BookForm } from "@/components/book-form";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
-  title: "Book now",
+  title: "Get a survey now",
   description:
-    "Book a free site survey or installation with Maruf. Pick a day and time that suits you and we'll confirm the details.",
+    "Book a free site survey with Maruf. Pick a day and time that suits you and we'll confirm the details.",
 };
 
 const expect = [
   { n: "01", title: "Pick a slot", body: "Choose the day and time window that works for you." },
   { n: "02", title: "We confirm", body: "We'll call or email to lock in the exact time and details." },
-  { n: "03", title: "We show up", body: "A certified installer arrives on time, ready to work." },
+  { n: "03", title: "We show up", body: "A professional installer arrives on time, ready to assess your home." },
 ];
 
 export default function BookPage() {
   return (
     <>
       <PageHeader
-        eyebrow="// Book now"
-        title="Reserve a visit that fits your schedule."
-        subtitle="Free site surveys, new installs, upgrades, and maintenance — pick a time and we'll take it from there."
-        crumb="Book now"
+        eyebrow="// Free Site Survey"
+        title="Reserve a survey that fits your schedule."
+        subtitle="Free site surveys, coverage mapping, and friendly advice — pick a time and we'll take it from there."
+        crumb="Get a survey now"
       />
 
       <section className="py-16 sm:py-24">

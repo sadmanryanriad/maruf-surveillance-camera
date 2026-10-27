@@ -20,11 +20,11 @@ export function Services() {
           </p>
         </Reveal>
 
-        {/* Cards */}
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Cards - 3 columns */}
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
           {services.map((service, i) => (
             <Reveal key={service.id} delay={i * 0.08}>
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-[0_18px_50px_-20px_var(--primary-glow)]">
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-[0_18px_50px_-20px_var(--primary-glow)]">
                 {/* Top accent line reveals on hover */}
                 <span className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100" />
 
@@ -35,20 +35,20 @@ export function Services() {
                   <span className="hud text-muted/70">{service.code}</span>
                 </div>
 
-                <h3 className="font-display text-lg font-semibold tracking-tight">
+                <h3 className="font-display text-xl font-semibold tracking-tight">
                   {service.title}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                <p className="mt-2.5 flex-1 text-sm leading-relaxed text-muted">
                   {service.description}
                 </p>
 
-                <ul className="mt-5 space-y-2 border-t border-line pt-4">
+                <ul className="mt-6 space-y-2.5 border-t border-line pt-5">
                   {service.points.map((point) => (
                     <li
                       key={point}
-                      className="flex items-center gap-2 text-xs text-foreground/80"
+                      className="flex items-center gap-2.5 text-xs text-foreground/85"
                     >
-                      <span className="h-1 w-1 rounded-full bg-primary" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                       {point}
                     </li>
                   ))}

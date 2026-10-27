@@ -25,7 +25,7 @@ export function Coverage() {
             Every doorway, driveway, and garden angle mapped.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted">
-            We map your home and calibrate each camera&apos;s angle to safeguard what matters most — family, pets, and vehicles — with zero blind spots.{" "}
+            We map your home and calibrate each camera&apos;s angle to safeguard what matters most — family, pets, and vehicles — with minimal blind spots.{" "}
             <span className="text-foreground">Hover a camera to see its coverage cone.</span>
           </p>
           <ul className="mt-7 space-y-3.5">

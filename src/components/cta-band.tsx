@@ -4,9 +4,9 @@ import { Reveal } from "./reveal";
 import { AmbientOrbs } from "./ambient-orbs";
 
 export function CtaBand({
-  title = "Ready to see what you've been missing?",
-  subtitle = "Book a free site survey. We'll map your coverage and quote the system that fits — no pressure.",
-  primary = { label: "Get a free quote", href: "/quote" },
+  title = "Ready to protect your home and loved ones?",
+  subtitle = "Book a free site survey. We'll map your coverage and advise the system that fits your home — no pressure, no hidden fees.",
+  primary = { label: "Get a survey now", href: "/book" },
   secondary,
 }: {
   title?: string;
@@ -28,7 +28,7 @@ export function CtaBand({
           />
           <div className="relative flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
             <div className="max-w-xl">
-              <p className="hud mb-3 text-[#7de8f5]">{"// Get started"}</p>
+              <p className="hud mb-3 text-[#7de8f5]">{"// Free Site Survey"}</p>
               <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
                 {title}
               </h2>
