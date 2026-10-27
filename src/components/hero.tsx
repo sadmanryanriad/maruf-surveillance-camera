@@ -21,7 +21,7 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[36%_48%] sm:object-[center_30%] filter brightness-[0.88] contrast-[1.05]"
+          className="object-cover object-[33%_center] scale-[1.08] translate-y-[2.5%] sm:object-[center_30%] sm:scale-105 sm:translate-x-[4%] sm:translate-y-0 filter brightness-[0.88] contrast-[1.05] transition-transform duration-500"
         />
 
         {/* High-legibility gradient that ensures text contrast while keeping family and camera visible */}
@@ -43,16 +43,15 @@ export function Hero() {
             hidden: {},
             show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
           }}
-          className="max-w-2xl"
+          className="max-w-[270px] sm:max-w-xl lg:max-w-2xl"
         >
           {/* Main Headline */}
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="font-display text-3xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-[4rem]"
+            className="font-display text-3xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[4rem]"
           >
-            Security you control{" "}
-            <br className="hidden sm:inline" />
+            Security you control <br />
             <span className="text-[#22d3ee]">and we support</span>.
           </motion.h1>
 
@@ -60,7 +59,7 @@ export function Hero() {
           <motion.p
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.7, ease }}
-            className="mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-white/85 font-sans"
+            className="mt-5 max-w-[250px] sm:max-w-xl text-base sm:text-lg leading-relaxed text-white/85 font-sans"
           >
             Smart, crystal-clear surveillance tailored to you, keeping your family and property safe. Streamed straight to your phone with friendly local support.
           </motion.p>
