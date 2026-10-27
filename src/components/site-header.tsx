@@ -39,7 +39,7 @@ export function SiteHeader() {
         const id = SECTION_IDS[i];
         const el = document.getElementById(id);
         if (el) {
-          const top = el.offsetTop;
+          const top = el.getBoundingClientRect().top + window.scrollY;
           if (scrollPosition >= top) {
             setActiveSection(id);
             break;
@@ -83,8 +83,8 @@ export function SiteHeader() {
         scrolled ? "shadow-md bg-surface/95" : "shadow-sm"
       }`}
     >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <Logo className="h-11 sm:h-12 md:h-14 w-auto" />
+      <div className="mx-auto flex h-18 sm:h-20 max-w-7xl items-center justify-between px-4 sm:px-8">
+        <Logo className="h-10 sm:h-12 md:h-14 w-auto" />
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-6 lg:flex xl:gap-8" aria-label="Primary">
@@ -118,18 +118,15 @@ export function SiteHeader() {
           </ButtonLink>
         </div>
 
-        {/* Mobile & tablet controls */}
-        <div className="flex items-center gap-2.5 lg:hidden">
+        {/* Mobile & tablet controls: clean, balanced, no crowded button */}
+        <div className="flex items-center gap-2 sm:gap-2.5 lg:hidden">
           <ThemeToggle />
-          <ButtonLink href="/book" variant="primary" size="sm" className="hidden sm:inline-flex">
-            Get a survey now
-          </ButtonLink>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label="Toggle menu"
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-line text-foreground"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-line text-foreground transition-colors hover:border-primary cursor-pointer"
           >
             <div className="space-y-1.5">
               <span className={`block h-0.5 w-5 bg-current transition-transform ${open ? "translate-y-2 rotate-45" : ""}`} />
