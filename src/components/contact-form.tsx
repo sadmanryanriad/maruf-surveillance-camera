@@ -108,18 +108,18 @@ export function ContactForm() {
             {/* Quick Contact & Copy Bar */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/80 p-4 shadow-sm">
-                <a href="mailto:info@marufsecurity.com" className="flex items-center gap-3 overflow-hidden">
+                <a href="mailto:info@silhouettesecuritysolutions.co.uk" className="flex items-center gap-3 overflow-hidden">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary text-sm font-bold">
                     ✉
                   </span>
                   <div className="truncate">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-muted">Direct Email</p>
-                    <p className="text-xs font-semibold text-foreground truncate">info@marufsecurity.com</p>
+                    <p className="text-xs font-semibold text-foreground truncate">info@silhouettesecuritysolutions.co.uk</p>
                   </div>
                 </a>
                 <button
                   type="button"
-                  onClick={() => handleCopy("info@marufsecurity.com", "email")}
+                  onClick={() => handleCopy("info@silhouettesecuritysolutions.co.uk", "email")}
                   className="rounded-lg border border-line px-2 py-1 text-[11px] font-bold text-muted hover:text-foreground"
                   title="Copy Email"
                 >
@@ -128,18 +128,18 @@ export function ContactForm() {
               </div>
 
               <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/80 p-4 shadow-sm">
-                <a href="https://wa.me/8801790424860" target="_blank" rel="noreferrer" className="flex items-center gap-3 overflow-hidden">
+                <a href="https://wa.me/441903905120" target="_blank" rel="noreferrer" className="flex items-center gap-3 overflow-hidden">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-bold">
                     💬
                   </span>
                   <div className="truncate">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-muted">WhatsApp / Phone</p>
-                    <p className="text-xs font-semibold text-foreground truncate">+880 1790-424860</p>
+                    <p className="text-xs font-semibold text-foreground truncate">+44 1903 905120</p>
                   </div>
                 </a>
                 <button
                   type="button"
-                  onClick={() => handleCopy("+8801790424860", "whatsapp")}
+                  onClick={() => handleCopy("+441903905120", "whatsapp")}
                   className="rounded-lg border border-line px-2 py-1 text-[11px] font-bold text-muted hover:text-foreground"
                   title="Copy WhatsApp"
                 >

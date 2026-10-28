@@ -14,7 +14,7 @@ export interface AdminSession {
   issuedAt: number;
 }
 
-const COOKIE_NAME = "maruf_admin_session";
+const COOKIE_NAME = "silhouette_admin_session";
 
 export async function verifyUserCredentials(email: string, password: string): Promise<{ user?: IUser; error?: string }> {
   try {

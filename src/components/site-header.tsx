@@ -143,7 +143,7 @@ export function SiteHeader() {
           <nav className="mx-auto flex max-w-7xl flex-col px-5 py-4" aria-label="Mobile">
             <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted w-max">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              Worthing & West Sussex · Local to you
+              Worthing & West Sussex
             </div>
             {nav.map((item) => {
               const active = isNavActive(item.href);

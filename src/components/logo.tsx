@@ -18,7 +18,7 @@ export function Logo({ className = "h-11 sm:h-12 md:h-14 w-auto" }: { className?
       {/* Light theme logo (for light background) */}
       <Image
         src="/logo-light.svg"
-        alt="Maruf Silhouette Security Solutions"
+        alt="Silhouette Security Solutions"
         width={260}
         height={73}
         priority
@@ -27,7 +27,7 @@ export function Logo({ className = "h-11 sm:h-12 md:h-14 w-auto" }: { className?
       {/* Dark theme logo (for dark background) */}
       <Image
         src="/logo-dark.svg"
-        alt="Maruf Silhouette Security Solutions"
+        alt="Silhouette Security Solutions"
         width={260}
         height={73}
         priority

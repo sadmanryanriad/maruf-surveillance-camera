@@ -1,11 +1,11 @@
 export const site = {
-  name: "Maruf",
+  name: "Silhouette Security Solutions",
   tagline: "Surveillance, done properly.",
-  phone: "+880 1790-424860",
-  email: "hello@maruf-security.com",
-  address: "Worthing, West Sussex · Local to you",
+  phone: "+44 1903 905120",
+  email: "info@silhouettesecuritysolutions.co.uk",
+  address: "Worthing, West Sussex",
   hours: "Mon–Sat · 8am–8pm",
-  whatsappNumber: "8801790424860",
+  whatsappNumber: "441903905120",
 };
 
 export type NavItem = { label: string; href: string };
@@ -210,7 +210,7 @@ export type Social = {
   icon: "facebook" | "instagram" | "x" | "linkedin";
 };
 
-// Demo placeholders — swap in Maruf's real profile URLs before launch.
+// Social profile links
 export const socials: Social[] = [
   { name: "Facebook", href: "#", icon: "facebook" },
   { name: "Instagram", href: "#", icon: "instagram" },

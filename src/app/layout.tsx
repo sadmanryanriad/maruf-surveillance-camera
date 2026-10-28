@@ -20,8 +20,8 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Maruf — Family Home Security & CCTV Installation | Worthing & West Sussex",
-    template: "%s — Maruf",
+    default: "Silhouette Security Solutions — Family Home Security & CCTV Installation | Worthing & West Sussex",
+    template: "%s — Silhouette Security Solutions",
   },
   description:
     "Security you control and we support. Professional family home CCTV & WiFi smart surveillance installations across Worthing and West Sussex. High-definition optics, zero monthly fees, and friendly local service.",

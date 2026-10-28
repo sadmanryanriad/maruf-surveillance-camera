@@ -15,7 +15,7 @@ export function Services() {
             One team, from first survey to the last cable.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted">
-            Maruf handles the whole job in-house — designing coverage, installing
+            Silhouette Security Solutions handles the whole job in-house — designing coverage, installing
             hardware, and keeping it running. No subcontractors, no guesswork.
           </p>
         </Reveal>

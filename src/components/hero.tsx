@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate min-h-[82vh] sm:min-h-[85vh] flex items-center overflow-hidden bg-slate-950 pt-24 pb-16 sm:pt-32 sm:pb-28 text-white scroll-mt-20"
+      className="relative isolate min-h-[540px] sm:min-h-[85vh] flex items-center overflow-hidden bg-slate-950 pt-20 pb-10 sm:pt-32 sm:pb-28 text-white scroll-mt-20"
       aria-label="Introduction"
     >
       {/* Background Hero Image */}
@@ -21,7 +21,7 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[33%_center] scale-[1.08] translate-y-[2.5%] sm:object-[center_30%] sm:scale-105 sm:translate-x-[4%] sm:translate-y-0 filter brightness-[0.88] contrast-[1.05] transition-transform duration-500"
+          className="object-cover object-[34%_35%] scale-[1.04] sm:object-[center_30%] sm:scale-105 sm:translate-x-[4%] sm:translate-y-0 filter brightness-[0.88] contrast-[1.05] transition-transform duration-500"
         />
 
         {/* High-legibility gradient that ensures text contrast while keeping family and camera visible */}

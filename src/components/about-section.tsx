@@ -1,8 +1,7 @@
+import Image from "next/image";
 import { values } from "@/lib/site";
 import { Reveal } from "./reveal";
 import { SectionHeading } from "./section-heading";
-import { ApertureMark } from "./logo";
-import { AmbientOrbs } from "./ambient-orbs";
 
 export function AboutSection() {
   return (
@@ -19,7 +18,7 @@ export function AboutSection() {
             </h2>
             <div className="mt-6 space-y-4 text-base sm:text-lg leading-relaxed text-muted">
               <p>
-                Maruf began with a simple frustration: too many security systems were
+                Silhouette Security Solutions began with a simple frustration: too many security systems were
                 sold by the box and installed in a hurry, leaving the exact blind spots
                 they were meant to cover.
               </p>
@@ -35,18 +34,26 @@ export function AboutSection() {
             </div>
           </Reveal>
 
-          {/* Stylized visual panel */}
+          {/* Authentic Installation Photography Panel */}
           <Reveal delay={0.1}>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-surface to-surface-2 shadow-lg">
-              <div className="bg-grid mask-fade pointer-events-none absolute inset-0 opacity-70" />
-              <AmbientOrbs />
-              <div className="animate-floaty absolute inset-0 flex items-center justify-center text-primary">
-                <ApertureMark className="h-32 sm:h-40 w-auto opacity-90" />
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-surface shadow-xl group">
+              <Image
+                src="/images/about-install.jpg"
+                alt="Professional security technician neatly installing outdoor CCTV camera on British residential home"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center filter brightness-[0.98] contrast-[1.02] transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/15 to-transparent pointer-events-none" />
+              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-xs text-white/90 font-mono tracking-wider">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-950/80 px-3 py-1.5 backdrop-blur-md border border-white/10">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#22d3ee] animate-pulse" />
+                  PRECISION INSTALLATION
+                </span>
+                <span className="hidden sm:inline-block rounded-full bg-slate-950/80 px-3 py-1.5 backdrop-blur-md border border-white/10 text-white/80">
+                  WORTHING & WEST SUSSEX
+                </span>
               </div>
-              <span className="hud absolute left-5 top-5 text-live">● LIVE</span>
-              <span className="hud absolute bottom-5 right-5 text-muted">LOCAL & INDEPENDENT</span>
-              <span className="pointer-events-none absolute left-4 top-4 h-6 w-6 border-l-2 border-t-2 border-primary/60" />
-              <span className="pointer-events-none absolute bottom-4 right-4 h-6 w-6 border-b-2 border-r-2 border-primary/60" />
             </div>
           </Reveal>
         </div>
