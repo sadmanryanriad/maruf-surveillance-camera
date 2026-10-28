@@ -23,28 +23,9 @@
   --font-mono: var(--font-plex-mono);
 }
 
-/* ---------------------------- LIGHT (default) --------------------- */
-:root {
-  --background: #f4f6fa;
-  --surface: #ffffff;
-  --surface-2: #edf1f7;
-  --foreground: #012169; /* Maruf Navy Blue */
-  --muted: #4a5c78;
-  --primary: #012169; /* Maruf Navy Blue */
-  --primary-strong: #01184e;
-  --primary-glow: #1a429b;
-  --on-primary: #ffffff;
-  --accent-red: #C8102E; /* Maruf Accent Red */
-  --rating: #b07400;
-  --line: #d8e0ec;
-  --live: #C8102E;
-}
-
-/* ---------------------------- DARK -------------------------------- *
- * Driven by data-theme="dark" on <html> (set by an inline pre-paint
- * script + the nav toggle). We use a data attribute, not a class,
- * because React controls <html>'s className and would drop it on
- * hydration. .dark is kept as an alias for convenience.               */
+/* ---------------------------- DARK (default) ---------------------- *
+ * Default theme across all devices.                                   */
+:root,
 .dark,
 [data-theme="dark"] {
   --background: #060d1b;
@@ -62,21 +43,36 @@
   --live: #ff334b;
 }
 
-/* ---------------------------- LOGO THEME SWITCHING ----------------- */
-.logo-light {
-  display: block;
-}
-.logo-dark {
-  display: none;
+/* ---------------------------- LIGHT (when toggled) ----------------- */
+[data-theme="light"] {
+  --background: #f4f6fa;
+  --surface: #ffffff;
+  --surface-2: #edf1f7;
+  --foreground: #012169; /* Maruf Navy Blue */
+  --muted: #4a5c78;
+  --primary: #012169; /* Maruf Navy Blue */
+  --primary-strong: #01184e;
+  --primary-glow: #1a429b;
+  --on-primary: #ffffff;
+  --accent-red: #C8102E; /* Maruf Accent Red */
+  --rating: #b07400;
+  --line: #d8e0ec;
+  --live: #C8102E;
 }
 
-[data-theme="dark"] .logo-light,
-.dark .logo-light {
+/* ---------------------------- LOGO THEME SWITCHING ----------------- */
+.logo-light {
   display: none !important;
 }
-[data-theme="dark"] .logo-dark,
-.dark .logo-dark {
+.logo-dark {
   display: block !important;
+}
+
+[data-theme="light"] .logo-light {
+  display: block !important;
+}
+[data-theme="light"] .logo-dark {
+  display: none !important;
 }
 
 /* ------------------------------ base ----------------------------- */

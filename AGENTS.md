@@ -17,7 +17,7 @@ Primary conversion goal: **Get a Quote** & **Book Now**.
 - **Fonts:** Manrope (display & body), IBM Plex Mono (HUD/code) via `next/font/google`.
 
 ## Design System & Theming
-- **Token-Driven:** Semantic CSS variables in `src/app/globals.css`. Never hardcode hex codes in components—use token utilities (`bg-background`, `text-foreground`, `text-muted`, `border-line`, `text-primary`, etc.).
+- **Token-Driven:** Semantic CSS variables in `src/app/globals.css`. Never hardcode hex codes in components—use token utilities (`bg-background`, `text-foreground`, `text-muted`, border-line, `text-primary`, etc.).
 - **Theme Switching:** Driven by `data-theme="dark"` attribute on `<html>` (resolved server-side via `theme` cookie in `layout.tsx`). Default is dark. Never use `@media (prefers-color-scheme: dark)` overrides.
 - **Intentionally Dark Panels:** Certain elements maintain a dark live-feed HUD aesthetic across both themes: hero live feed banner, floor-plan coverage map, and CTA band.
 - **Tokens:** `--background`, `--surface`, `--foreground`, `--muted`, `--primary` (cyan), `--on-primary`, `--rating` (gold), `--line`, `--live` (recording red).
@@ -27,8 +27,14 @@ Primary conversion goal: **Get a Quote** & **Book Now**.
 - **Components:** `src/components/` (shared sections, primitives in `ui/`, forms in `forms/`).
 - **Static Data:** Centralized in `src/lib/site.ts`.
 - **Forms:** Client-side validated mock shells (`FormShell`, `ContactForm`) displaying simulated submission state.
+
 ## Verification
 - Always verify changes with `pnpm build` before completing tasks.
+
+## Deployment Workflow
+- **Development / Staging:** Pushes on `main` branch trigger preview/development deployment on Vercel (`main`).
+- **Production Deployment:** Production deployment is triggered automatically by merging `main` into the `production` branch and pushing to `origin production`.
+  - Workflow: `git checkout production && git merge main && git push origin production && git checkout main`
 
 ## Senior Engineer Mindset & Guidelines
 **Act as a senior engineer, not a blind executor:**
@@ -36,4 +42,3 @@ Primary conversion goal: **Get a Quote** & **Book Now**.
 - **Proactively optimize**: Continuously identify performance, architecture, SEO, and UX opportunities and propose them to the owner.
 - **Permission for sensitive ops**: Never execute destructive actions, schema/database migrations, financial edits, or infrastructure modifications without explicit permission.
 - **Smart verification & living docs**: Before committing, reason if internal docs need updating and keep them in sync. **Calibrate checks by impact**: run full tests/builds/lint only for code/logic changes; for doc-only (`.md`) changes, skip tests, builds, and CI log babysitting entirely; for minor copy/UI tweaks, run fast local checks without redundant full build steps.
-
