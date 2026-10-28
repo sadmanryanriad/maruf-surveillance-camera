@@ -8,6 +8,12 @@ Next.js 16 contains breaking changes. Read guides in `node_modules/next/dist/doc
 Marketing website for Maruf (commercial & residential CCTV/surveillance installation).
 Primary conversion goal: **Get a Quote** & **Book Now**.
 
+## Project Context & Stakeholders
+- **Developer:** Sadman Ryan Riad (`sadmanryanriad@gmail.com`).
+- **Partner / Friend:** Maruf (business contact and collaborator).
+- **Client:** Dan (Maruf's client).
+- **Working Dynamic:** Sadman Ryan Riad develops and maintains the website for Dan through Maruf.
+
 ## Tech Stack & Tools
 - **Framework:** Next.js 16 (App Router, `src/`, TypeScript, Turbopack). React Server Components by default; `"use client"` only when browser APIs or interactivity are needed.
 - **Package Manager:** `pnpm` (use `pnpm dev`, `pnpm build`, `pnpm lint`).
