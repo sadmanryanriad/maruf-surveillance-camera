@@ -1,11 +1,11 @@
 export const site = {
   name: "Silhouette Security Solutions",
   tagline: "Surveillance, done properly.",
-  phone: "+44 1903 905120",
+  phone: "+44 7877198405",
   email: "info@silhouettesecuritysolutions.co.uk",
   address: "Worthing, West Sussex",
   hours: "Mon–Sat · 8am–8pm",
-  whatsappNumber: "441903905120",
+  whatsappNumber: "447877198405",
 };
 
 export type NavItem = { label: string; href: string };

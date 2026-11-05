@@ -21,7 +21,7 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[34%_35%] scale-[1.04] sm:object-[center_30%] sm:scale-105 sm:translate-x-[4%] sm:translate-y-0 filter brightness-[0.88] contrast-[1.05] transition-transform duration-500"
+          className="object-cover object-[34%_35%] scale-[1.04] sm:object-[62%_30%] scale-105 filter brightness-[0.88] contrast-[1.05] transition-transform duration-500"
         />
 
         {/* High-legibility gradient that ensures text contrast while keeping family and camera visible */}

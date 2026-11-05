@@ -10,11 +10,11 @@ export async function GET() {
     let setting = await Setting.findOne().lean();
     if (!setting) {
       setting = await Setting.create({
-        phone: "+880 1790-424860",
-        email: "hello@maruf-security.com",
+        phone: "+44 7877198405",
+        email: "info@silhouettesecuritysolutions.co.uk",
         address: "Worthing, West Sussex · Local to you",
         hours: "Mon-Sat · 8am-8pm",
-        whatsappNumber: "8801790424860",
+        whatsappNumber: "447877198405",
         telegramChatIds: ["1240674937"],
       });
     }

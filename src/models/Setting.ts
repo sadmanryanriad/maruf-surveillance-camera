@@ -12,11 +12,11 @@ export interface ISetting extends Document {
 
 const SettingSchema: Schema<ISetting> = new Schema(
   {
-    phone: { type: String, default: "+44 1903 905120" },
+    phone: { type: String, default: "+44 7877198405" },
     email: { type: String, default: "info@silhouettesecuritysolutions.co.uk" },
     address: { type: String, default: "Worthing, West Sussex" },
     hours: { type: String, default: "Mon-Sat · 8am-8pm" },
-    whatsappNumber: { type: String, default: "441903905120" },
+    whatsappNumber: { type: String, default: "447877198405" },
     telegramChatIds: {
       type: [String],
       default: ["1240674937"],

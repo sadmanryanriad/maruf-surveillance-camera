@@ -68,21 +68,21 @@ async function seedDefaultAdmin() {
     const setting = await Setting.findOne();
     if (!setting) {
       await Setting.create({
-        phone: "+44 1903 905120",
+        phone: "+44 7877198405",
         email: "info@silhouettesecuritysolutions.co.uk",
         address: "Worthing, West Sussex",
         hours: "Mon-Sat · 8am-8pm",
-        whatsappNumber: "441903905120",
+        whatsappNumber: "447877198405",
         telegramChatIds: ["1240674937"],
       });
       console.log("✅ Seeded default site settings and Telegram Chat ID");
     } else {
       let updated = false;
-      if (!setting.phone || setting.phone.includes("01760") || setting.phone.includes("880")) { setting.phone = "+44 1903 905120"; updated = true; }
+      if (!setting.phone || setting.phone.includes("01760") || setting.phone.includes("880") || setting.phone.includes("1903")) { setting.phone = "+44 7877198405"; updated = true; }
       if (!setting.email || setting.email.includes("maruf")) { setting.email = "info@silhouettesecuritysolutions.co.uk"; updated = true; }
       if (!setting.address || setting.address.includes("Watchtower") || setting.address.includes("Local to you")) { setting.address = "Worthing, West Sussex"; updated = true; }
       if (!setting.hours) { setting.hours = "Mon-Sat · 8am-8pm"; updated = true; }
-      if (!setting.whatsappNumber || setting.whatsappNumber.includes("880")) { setting.whatsappNumber = "441903905120"; updated = true; }
+      if (!setting.whatsappNumber || setting.whatsappNumber.includes("880") || setting.whatsappNumber.includes("1903")) { setting.whatsappNumber = "447877198405"; updated = true; }
       if (updated) await setting.save();
     }
   } catch (err) {

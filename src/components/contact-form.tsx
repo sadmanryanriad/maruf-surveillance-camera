@@ -128,18 +128,18 @@ export function ContactForm() {
               </div>
 
               <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/80 p-4 shadow-sm">
-                <a href="https://wa.me/441903905120" target="_blank" rel="noreferrer" className="flex items-center gap-3 overflow-hidden">
+                <a href="https://wa.me/447877198405" target="_blank" rel="noreferrer" className="flex items-center gap-3 overflow-hidden">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-bold">
                     💬
                   </span>
                   <div className="truncate">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-muted">WhatsApp / Phone</p>
-                    <p className="text-xs font-semibold text-foreground truncate">+44 1903 905120</p>
+                    <p className="text-xs font-semibold text-foreground truncate">+44 7877198405</p>
                   </div>
                 </a>
                 <button
                   type="button"
-                  onClick={() => handleCopy("+441903905120", "whatsapp")}
+                  onClick={() => handleCopy("+447877198405", "whatsapp")}
                   className="rounded-lg border border-line px-2 py-1 text-[11px] font-bold text-muted hover:text-foreground"
                   title="Copy WhatsApp"
                 >
